@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 import "./App.css";
 
 
-import Navbar from "./Navbar/Navbar";
+import MuiNavbar from "./Navbar/MuiNavbar";
 import HomePage from "./pages/HomePage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
@@ -12,7 +12,7 @@ function App() {
   return (
     <Container>
       <header>
-        <Navbar />
+        <MuiNavbar />
       </header>
       <main>
         <Router/>
