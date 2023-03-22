@@ -16,15 +16,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme();
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const [inputState, setInputState] = useState({
-    firstName: "",
-    lastName: "",
     email: "",
     password: "",
   });
   const handeleBtnClick = (ev) => {
-console.log("click");};
+    console.log("click");
+  };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
@@ -46,35 +45,10 @@ console.log("click");};
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Login
           </Typography>
           <Box component="div" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  value={inputState.firstName}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={inputState.lastName}
-                  onChange={handleInputChange}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -115,7 +89,7 @@ console.log("click");};
               sx={{ mt: 3, mb: 2 }}
               onClick={handeleBtnClick}
             >
-              Sign Up
+              Login
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
@@ -130,5 +104,4 @@ console.log("click");};
     </ThemeProvider>
   );
 };
-
-export default RegisterPage;
+export default LoginPage;
