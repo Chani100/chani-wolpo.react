@@ -19,6 +19,10 @@ code {
   width: 40px;
 
 }
-.muiNavbar{
-  color: blueviolet;
+.header{
+  background-color:purple;
+}
+.imgcard{
+  width: 100%;
+  height:15em;
 }

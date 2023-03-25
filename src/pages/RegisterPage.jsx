@@ -13,7 +13,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import validateRegisterSchema from "../validation/registerValidation";
+import Alert from "@mui/material/Alert";
 const theme = createTheme();
 
 const RegisterPage = () => {
@@ -23,8 +24,12 @@ const RegisterPage = () => {
     email: "",
     password: "",
   });
+  const [inputsErrorState, setinputsErrorState] = useState({});
   const handeleBtnClick = (ev) => {
-console.log("click");};
+    const joiResponse = validateRegisterSchema(inputState);
+
+    setinputsErrorState(joiResponse);
+  };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
@@ -62,6 +67,11 @@ console.log("click");};
                   value={inputState.firstName}
                   onChange={handleInputChange}
                 />
+                {inputsErrorState.firstName && (
+                  <Alert severity="warning">
+                    {inputsErrorState.firstName.join("<br>")}
+                  </Alert>
+                )}
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -74,6 +84,11 @@ console.log("click");};
                   value={inputState.lastName}
                   onChange={handleInputChange}
                 />
+                {inputsErrorState.lastName && (
+                  <Alert severity="warning">
+                    {inputsErrorState.lastName.join("<br>")}
+                  </Alert>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -86,6 +101,11 @@ console.log("click");};
                   value={inputState.email}
                   onChange={handleInputChange}
                 />
+                {inputsErrorState.email && (
+                  <Alert severity="warning">
+                    {inputsErrorState.email.join("<br>")}
+                  </Alert>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -99,6 +119,11 @@ console.log("click");};
                   value={inputState.password}
                   onChange={handleInputChange}
                 />
+                {inputsErrorState.password && (
+                  <Alert severity="warning">
+                    {inputsErrorState.password.join("<br>")}
+                  </Alert>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel

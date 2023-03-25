@@ -46,8 +46,8 @@ const MuiNavbar = () => {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl" className="muiNavbar">
+    <AppBar position="static" color="primary">
+      <Container maxWidth="xl">
         <Toolbar>
           <img src="./logo192.png" alt="logo" className="logo" />
 
@@ -62,7 +62,7 @@ const MuiNavbar = () => {
                       display: "block",
                       p: 2,
                     }}
-                    color={isActive ? "error" : "info"}
+                    color={isActive ? "#9c27b0" : "#76ff03"}
                   >
                     {page.label}
                   </Typography>
@@ -115,7 +115,7 @@ const MuiNavbar = () => {
                       <Typography
                         sx={{
                           textAlign: "center",
-                          color: `${isActive ? "error" : ""}`,
+                          color: `${isActive ? "#9c27b0" : "#76ff03"}`,
                         }}
                       >
                         {page.label}

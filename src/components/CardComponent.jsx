@@ -20,7 +20,7 @@ const CardComponent = ({ id, img, title, price, description, onDelete }) => {
   return (
     <Card square raised>
       <CardActionArea>
-        <CardMedia component="img" image={img} />
+        <CardMedia component="img" image={img} className="imgcard"/>
       </CardActionArea>
       <CardHeader title={title} subheader={`$ ${price}`} />
       <CardContent>

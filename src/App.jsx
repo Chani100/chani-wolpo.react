@@ -15,7 +15,7 @@ function App() {
         <MuiNavbar />
       </header>
       <main>
-        <Router/>
+        <Router />
       </main>
       <footer></footer>
     </Container>

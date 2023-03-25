@@ -9,10 +9,13 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import LoginIcon from "@mui/icons-material/Login";
+import Alert from "@mui/material/Alert";
+import validateLoginSchema from "../validation/loginValidation";
 
 const theme = createTheme();
 
@@ -21,8 +24,11 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
+  const [inputsErrorState, setinputsErrorState] = useState({});
   const handeleBtnClick = (ev) => {
-    console.log("click");
+    const joiResponse = validateLoginSchema(inputState);
+
+    setinputsErrorState(joiResponse);
   };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
@@ -42,7 +48,7 @@ const LoginPage = () => {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
+            <LoginIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Login
@@ -60,6 +66,11 @@ const LoginPage = () => {
                   value={inputState.email}
                   onChange={handleInputChange}
                 />
+                {inputsErrorState.email && (
+                  <Alert severity="warning">
+                    {inputsErrorState.email.join("<br>")}
+                  </Alert>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -73,6 +84,12 @@ const LoginPage = () => {
                   value={inputState.password}
                   onChange={handleInputChange}
                 />
+                {inputsErrorState.password && (
+                  <Alert severity="warning">
+                    {inputsErrorState.password.join(" <br>")}
+                  </Alert>
+                )}
+               
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
