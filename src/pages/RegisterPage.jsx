@@ -1,12 +1,12 @@
 import { useState } from "react";
-import * as React from "react";
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+import { Link, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -15,6 +15,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import validateRegisterSchema from "../validation/registerValidation";
 import Alert from "@mui/material/Alert";
+import ROUTES from "../routes/ROUTES";
 const theme = createTheme();
 
 const RegisterPage = () => {
@@ -24,11 +25,15 @@ const RegisterPage = () => {
     email: "",
     password: "",
   });
-  const [inputsErrorState, setinputsErrorState] = useState({});
+  const [inputsErrorState, setinputsErrorState] = useState(null);
+  const navigate= useNavigate();
   const handeleBtnClick = (ev) => {
     const joiResponse = validateRegisterSchema(inputState);
 
     setinputsErrorState(joiResponse);
+    if (!joiResponse){
+      navigate(ROUTES.LOGIN);
+    }
   };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
@@ -36,7 +41,7 @@ const RegisterPage = () => {
     setInputState(newInputState);
   };
   return (
-    <ThemeProvider theme={theme}>
+  
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -67,9 +72,11 @@ const RegisterPage = () => {
                   value={inputState.firstName}
                   onChange={handleInputChange}
                 />
-                {inputsErrorState.firstName && (
+                {inputsErrorState && inputsErrorState.firstName && (
                   <Alert severity="warning">
-                    {inputsErrorState.firstName.join("<br>")}
+                    {inputsErrorState.firstName.map((item) => (
+                      <div key={"lastName-errors" + item}>{item}</div>
+                    ))}
                   </Alert>
                 )}
               </Grid>
@@ -84,9 +91,11 @@ const RegisterPage = () => {
                   value={inputState.lastName}
                   onChange={handleInputChange}
                 />
-                {inputsErrorState.lastName && (
+                {inputsErrorState && inputsErrorState.lastName && (
                   <Alert severity="warning">
-                    {inputsErrorState.lastName.join("<br>")}
+                    {inputsErrorState.lastName.map((item) => (
+                      <div key={"lastName-errors" + item}>{item}</div>
+                    ))}
                   </Alert>
                 )}
               </Grid>
@@ -101,9 +110,11 @@ const RegisterPage = () => {
                   value={inputState.email}
                   onChange={handleInputChange}
                 />
-                {inputsErrorState.email && (
+                {inputsErrorState && inputsErrorState.email && (
                   <Alert severity="warning">
-                    {inputsErrorState.email.join("<br>")}
+                    {inputsErrorState.email.map((item) => (
+                      <div key={"email-errors" + item}>{item}</div>
+                    ))}
                   </Alert>
                 )}
               </Grid>
@@ -119,9 +130,11 @@ const RegisterPage = () => {
                   value={inputState.password}
                   onChange={handleInputChange}
                 />
-                {inputsErrorState.password && (
+                {inputsErrorState && inputsErrorState.password && (
                   <Alert severity="warning">
-                    {inputsErrorState.password.join("<br>")}
+                    {inputsErrorState.password.map((item) => (
+                      <div key={"password-errors" + item}>{item}</div>
+                    ))}
                   </Alert>
                 )}
               </Grid>
@@ -144,15 +157,17 @@ const RegisterPage = () => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
+                <Link to={ROUTES.LOGIN}>
+                  <Typography variant="body2">
+                    Already have an account? Sign in
+                  </Typography>
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
+   
   );
 };
 

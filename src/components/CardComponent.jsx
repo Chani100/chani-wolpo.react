@@ -1,4 +1,3 @@
-import { Square } from "@mui/icons-material";
 import {
   Card,
   CardActionArea,
@@ -12,15 +11,18 @@ import {
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
-
-const CardComponent = ({ id, img, title, price, description, onDelete }) => {
+import CreateIcon from "@mui/icons-material/Create";
+const CardComponent = ({ id, img, title, price, description, onDelete, onEdit }) => {
   const handleBtnDeleteClick = () => {
     onDelete(id);
+  };
+  const handleBtnEditClick = () => {
+   onEdit(id) ;
   };
   return (
     <Card square raised>
       <CardActionArea>
-        <CardMedia component="img" image={img} className="imgcard"/>
+        <CardMedia component="img" image={img} className="imgcard" />
       </CardActionArea>
       <CardHeader title={title} subheader={`$ ${price}`} />
       <CardContent>
@@ -28,20 +30,28 @@ const CardComponent = ({ id, img, title, price, description, onDelete }) => {
       </CardContent>
       <CardActions>
         <Button
-        className="buttonBuyNow"
-          variant="text"
+          className="buttonBuyNow"
+          variant="outlined"
           color="primary"
           endIcon={<ShoppingCartOutlinedIcon />}
         >
           buy now
         </Button>
         <Button
-          variant="text"
+          variant="outlined"
           color="error"
           onClick={handleBtnDeleteClick}
           endIcon={<DeleteIcon />}
         >
           Delet
+        </Button>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={handleBtnEditClick}
+          endIcon={<CreateIcon />}
+        >
+          Edit
         </Button>
       </CardActions>
     </Card>
@@ -53,7 +63,8 @@ CardComponent.propTypes = {
   title: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   description: PropTypes.string.isRequired,
-  onDelete:PropTypes.func,
+  onDelete: PropTypes.func,
+  onEdit: PropTypes.func,
 };
 CardComponent.defaultProps = {
   img: "https://www.photo-art.co.il/wp-content/uploads/2017/09/IMG_9006.jpg",
