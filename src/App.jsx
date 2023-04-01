@@ -15,7 +15,7 @@ import "./App.css";
 import MuiNavbar from "../src/Navbar/MuiNavbar";
 import Router from "./routes/Router";
 
-const light = {
+ const light = {
   palette: {
     mode: "light",
   },
@@ -26,17 +26,17 @@ const dark = {
     mode: "dark", 
   
   },
-};
+}; 
 
 function App() {
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
-  const changeTheme = () => {
+  const [isDarkTheme, setIsDarkTheme] = useState(false); 
+   const onThemeChange = () => {
     setIsDarkTheme(!isDarkTheme);
-  };
+  }; 
   return (
     <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light)}>
       <CssBaseline />
-     {/*  <ToastContainer
+      {/*  <ToastContainer
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -50,8 +50,8 @@ function App() {
       /> */}
       <Container>
         <header>
-          <Switch checked={isDarkTheme} onChange={changeTheme} />
-          <MuiNavbar />
+         
+          <MuiNavbar />  {<Switch checked={isDarkTheme} onChange={onThemeChange} />  }
         </header>
         <main>
           <Router />

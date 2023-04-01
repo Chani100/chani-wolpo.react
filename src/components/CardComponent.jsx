@@ -12,19 +12,27 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
 import CreateIcon from "@mui/icons-material/Create";
-const CardComponent = ({ id, img, title, price, description, onDelete, onEdit }) => {
+const CardComponent = ({
+  id /* address, */ /* bizNumber,createdAt, */,
+  /*  likes,phone, */ img,
+  title,
+  subTitle,
+  description,
+  onDelete,
+  onEdit,
+}) => {
   const handleBtnDeleteClick = () => {
     onDelete(id);
   };
   const handleBtnEditClick = () => {
-   onEdit(id) ;
+    onEdit(id);
   };
   return (
     <Card square raised>
       <CardActionArea>
         <CardMedia component="img" image={img} className="imgcard" />
       </CardActionArea>
-      <CardHeader title={title} subheader={`$ ${price}`} />
+      <CardHeader title={title} subheader={`$ ${subTitle}`} />
       <CardContent>
         <Typography>{description}</Typography>
       </CardContent>
@@ -58,16 +66,16 @@ const CardComponent = ({ id, img, title, price, description, onDelete, onEdit })
   );
 };
 CardComponent.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   img: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
+  subTitle: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,
 };
 CardComponent.defaultProps = {
   img: "https://www.photo-art.co.il/wp-content/uploads/2017/09/IMG_9006.jpg",
-  price: 0,
+  subTitle: 0,
 };
 export default CardComponent;

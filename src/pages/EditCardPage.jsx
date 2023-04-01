@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -13,21 +13,33 @@ import Container from "@mui/material/Container";
 
 import Alert from "@mui/material/Alert";
 import { useNavigate, useParams } from "react-router-dom";
-import validateEditCardSchema from "../validation/editCardValidation";
+import validateEditCardSchema, {
+  validateEditCardParamsSchema,
+} from "../validation/editCardValidation";
 import ROUTES from "../routes/ROUTES";
 import CreateIcon from "@mui/icons-material/Create";
-const EditCardPage = () => {
-  const [inputState, setInputState] = useState({
-    img: "",
-    title: "",
-    price: "",
-    description: "",
-  });
-  const [inputsErrorState, setinputsErrorState] = useState(null);
-  const navigate = useNavigate();
-  const params = useParams();
 
-  const handeleBtnClick = (ev) => {
+
+import { CircularProgress } from "@mui/material";
+
+const EditCardPage = () => {
+  const { id } = useParams();
+
+ 
+  const [inputState, setInputState] = useState(null);
+   const [inputsErrorState, setinputsErrorState] = useState({});
+  const navigate = useNavigate();
+  useEffect(() => {
+    const errors = validateEditCardParamsSchema({ id });
+    if (errors) {
+      navigate("*");
+      return;
+    } 
+   
+
+
+  }, [id]);
+  const handeleBtnClick = () => {
     const joiResponse = validateEditCardSchema(inputState);
 
     setinputsErrorState(joiResponse);
@@ -40,6 +52,10 @@ const EditCardPage = () => {
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
   };
+
+  if (!inputState) {
+    return <CircularProgress color="secondary" />;
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

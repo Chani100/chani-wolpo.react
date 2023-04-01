@@ -12,11 +12,11 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import validateRegisterSchema from "../validation/registerValidation";
 import Alert from "@mui/material/Alert";
 import ROUTES from "../routes/ROUTES";
-const theme = createTheme();
+import axios from "axios";
 
 const RegisterPage = () => {
   const [inputState, setInputState] = useState({
@@ -26,14 +26,26 @@ const RegisterPage = () => {
     password: "",
   });
   const [inputsErrorState, setinputsErrorState] = useState(null);
-  const navigate= useNavigate();
-  const handeleBtnClick = (ev) => {
-    const joiResponse = validateRegisterSchema(inputState);
+  const navigate = useNavigate();
+  const handeleBtnClick = async (ev) => {
+    try {
+      const joiResponse = validateRegisterSchema(inputState);
 
-    setinputsErrorState(joiResponse);
-    if (!joiResponse){
+      setinputsErrorState(joiResponse);
+      if (joiResponse) {
+        return;
+      }
+      const { data } = await axios.post(
+        "/users/register",
+        {
+          name: inputState.firstName + " " + inputState.lastName,
+          email: inputState.email,
+          password: inputState.password,
+        }
+      );
+
       navigate(ROUTES.LOGIN);
-    }
+    } catch (err) {}
   };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
@@ -41,133 +53,129 @@ const RegisterPage = () => {
     setInputState(newInputState);
   };
   return (
-  
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box component="div" noValidate sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  value={inputState.firstName}
-                  onChange={handleInputChange}
-                />
-                {inputsErrorState && inputsErrorState.firstName && (
-                  <Alert severity="warning">
-                    {inputsErrorState.firstName.map((item) => (
-                      <div key={"lastName-errors" + item}>{item}</div>
-                    ))}
-                  </Alert>
-                )}
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={inputState.lastName}
-                  onChange={handleInputChange}
-                />
-                {inputsErrorState && inputsErrorState.lastName && (
-                  <Alert severity="warning">
-                    {inputsErrorState.lastName.map((item) => (
-                      <div key={"lastName-errors" + item}>{item}</div>
-                    ))}
-                  </Alert>
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={inputState.email}
-                  onChange={handleInputChange}
-                />
-                {inputsErrorState && inputsErrorState.email && (
-                  <Alert severity="warning">
-                    {inputsErrorState.email.map((item) => (
-                      <div key={"email-errors" + item}>{item}</div>
-                    ))}
-                  </Alert>
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={inputState.password}
-                  onChange={handleInputChange}
-                />
-                {inputsErrorState && inputsErrorState.password && (
-                  <Alert severity="warning">
-                    {inputsErrorState.password.map((item) => (
-                      <div key={"password-errors" + item}>{item}</div>
-                    ))}
-                  </Alert>
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+        <Box component="div" noValidate sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="firstName"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                autoFocus
+                value={inputState.firstName}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.firstName && (
+                <Alert severity="warning">
+                  {inputsErrorState.firstName.map((item) => (
+                    <div key={"lastName-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
             </Grid>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handeleBtnClick}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to={ROUTES.LOGIN}>
-                  <Typography variant="body2">
-                    Already have an account? Sign in
-                  </Typography>
-                </Link>
-              </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="family-name"
+                value={inputState.lastName}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.lastName && (
+                <Alert severity="warning">
+                  {inputsErrorState.lastName.map((item) => (
+                    <div key={"lastName-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
             </Grid>
-          </Box>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                value={inputState.email}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.email && (
+                <Alert severity="warning">
+                  {inputsErrorState.email.map((item) => (
+                    <div key={"email-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+                value={inputState.password}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.password && (
+                <Alert severity="warning">
+                  {inputsErrorState.password.map((item) => (
+                    <div key={"password-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                label="I want to receive inspiration, marketing promotions and updates via email."
+              />
+            </Grid>
+          </Grid>
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handeleBtnClick}
+          >
+            Sign Up
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link to={ROUTES.LOGIN}>
+                <Typography variant="body2">
+                  Already have an account? Sign in
+                </Typography>
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
-      </Container>
-   
+      </Box>
+    </Container>
   );
 };
 

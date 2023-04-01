@@ -1,23 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 
-
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from 'react-router-dom';
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import validation from './validation/validation';
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import validation from "./validation/validation";
+import axios from "axios";
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+axios.defaults.baseURL = "/api";
+
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers["x-auth-token"] = token;
+  }
+  return config;
+});
+
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
+  <BrowserRouter>
     <App />
-    </BrowserRouter>
-  </React.StrictMode>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

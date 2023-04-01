@@ -18,6 +18,7 @@ import Alert from "@mui/material/Alert";
 import { Link, useNavigate } from "react-router-dom";
 import validateLoginSchema from "../validation/loginValidation";
 import ROUTES from "../routes/ROUTES";
+import axios from "axios";
 
 const LoginPage = () => {
   const [inputState, setInputState] = useState({
@@ -26,13 +27,18 @@ const LoginPage = () => {
   });
   const [inputsErrorState, setinputsErrorState] = useState(null);
   const navigate = useNavigate();
-  const handeleBtnClick = (ev) => {
+  const handeleBtnClick = async (ev) => {
     const joiResponse = validateLoginSchema(inputState);
+    try {
+      setinputsErrorState(joiResponse);
+      if (joiResponse) {
+        return;
+      }
+      const { data} = await axios.post("/users/login", inputState);
+      localStorage.setItem("token", data.token);
 
-    setinputsErrorState(joiResponse);
-    if (!joiResponse) {
       navigate(ROUTES.HOME);
-    }
+    } catch (err) {}
   };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
