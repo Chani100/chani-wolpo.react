@@ -7,9 +7,9 @@ import {
   CssBaseline,
 } from "@mui/material";
 
-/* toast */
-/* import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; */
+
+ import { ToastContainer } from "react-toastify";
+
 
 import "./App.css";
 import MuiNavbar from "../src/Navbar/MuiNavbar";
@@ -36,7 +36,7 @@ function App() {
   return (
     <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light)}>
       <CssBaseline />
-      {/*  <ToastContainer
+      <ToastContainer
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -46,12 +46,12 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="colored"
-      /> */}
+        theme="dark"
+      />
       <Container>
         <header>
-         
-          <MuiNavbar />  {<Switch checked={isDarkTheme} onChange={onThemeChange} />  }
+          <MuiNavbar />{" "}
+          {<Switch checked={isDarkTheme} onChange={onThemeChange} />}
         </header>
         <main>
           <Router />

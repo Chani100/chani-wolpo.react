@@ -17,6 +17,7 @@ import validateRegisterSchema from "../validation/registerValidation";
 import Alert from "@mui/material/Alert";
 import ROUTES from "../routes/ROUTES";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
   const [inputState, setInputState] = useState({
@@ -45,7 +46,7 @@ const RegisterPage = () => {
       );
 
       navigate(ROUTES.LOGIN);
-    } catch (err) {}
+    } catch (err) {  toast.error("registered user");}
   };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));

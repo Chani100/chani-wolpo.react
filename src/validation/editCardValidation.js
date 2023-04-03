@@ -23,7 +23,7 @@ const editCardSchema = Joi.object({
 });
 
 const editCardParamsSchema = Joi.object({
-  id: Joi.number().min(1).required,
+  id: Joi.string().min(1).required,
 });
 const validateEditCardSchema = (userInput) =>
   validation(editCardSchema, userInput);

@@ -19,25 +19,27 @@ import validateEditCardSchema, {
 import ROUTES from "../routes/ROUTES";
 import CreateIcon from "@mui/icons-material/Create";
 
-
 import { CircularProgress } from "@mui/material";
+import axios from "axios";
 
 const EditCardPage = () => {
   const { id } = useParams();
 
- 
   const [inputState, setInputState] = useState(null);
-   const [inputsErrorState, setinputsErrorState] = useState({});
+  const [inputsErrorState, setinputsErrorState] = useState({});
   const navigate = useNavigate();
   useEffect(() => {
-    const errors = validateEditCardParamsSchema({ id });
-    if (errors) {
-      navigate("*");
-      return;
-    } 
-   
-
-
+    (async () => {
+      try {
+        const errors = validateEditCardParamsSchema({ id });
+        if (errors) {
+          /* navigate("*"); */
+          return;
+        }
+        const { data } = await axios.get("/cards/card" + id);
+       setInputState(data); 
+      } catch (err) {}
+    })();
   }, [id]);
   const handeleBtnClick = () => {
     const joiResponse = validateEditCardSchema(inputState);

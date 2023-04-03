@@ -19,6 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 import validateLoginSchema from "../validation/loginValidation";
 import ROUTES from "../routes/ROUTES";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [inputState, setInputState] = useState({
@@ -32,13 +33,14 @@ const LoginPage = () => {
     try {
       setinputsErrorState(joiResponse);
       if (joiResponse) {
+        toast.error("Invalid user information");
         return;
       }
       const { data} = await axios.post("/users/login", inputState);
       localStorage.setItem("token", data.token);
 
       navigate(ROUTES.HOME);
-    } catch (err) {}
+    } catch (err) {  toast.error("Unregistered user");}
   };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));

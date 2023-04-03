@@ -3,6 +3,7 @@ import CardComponent from "../components/CardComponent";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 const HomePage = () => {
   const [cardsArr, setCardsArr] = useState(null);
   const navigate = useNavigate();
@@ -13,6 +14,9 @@ const HomePage = () => {
         setCardsArr(data);
       })
       .catch();
+    {
+      toast.error('hopppssss')
+    }
   }, []);
   const handlDeleteFromInitialCardArr = async (id) => {
     try {
@@ -20,8 +24,7 @@ const HomePage = () => {
         newCardsArr.filter((item) => item._id != id)
       );
       await axios.delete("/cards/" + id);
-      
-    } catch (err) {}
+    } catch (err) {  toast.error("hopppssss");}
   };
 
   const handlEditFromInitialCardArr = (id) => {
