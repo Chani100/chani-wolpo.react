@@ -13,7 +13,8 @@ import "@fontsource/roboto/700.css";
 import "react-toastify/dist/ReactToastify.css"; 
 import validation from "./validation/validation";
 import axios from "axios";
-const root = ReactDOM.createRoot(document.getElementById("root"));
+import { Provider } from "react-redux";
+import store from "./store/bigPie";
 
 axios.defaults.baseURL = "/api";
 
@@ -25,10 +26,13 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  <Provider store ={store}>
   <BrowserRouter>
     <App />
   </BrowserRouter>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -15,7 +15,7 @@ const HomePage = () => {
       })
       .catch();
     {
-      toast.error('hopppssss')
+     
     }
   }, []);
   const handlDeleteFromInitialCardArr = async (id) => {
@@ -24,7 +24,8 @@ const HomePage = () => {
         newCardsArr.filter((item) => item._id != id)
       );
       await axios.delete("/cards/" + id);
-    } catch (err) {  toast.error("hopppssss");}
+      toast.success("The image has been successfully deleted");
+    } catch (err) {  }
   };
 
   const handlEditFromInitialCardArr = (id) => {
@@ -43,7 +44,7 @@ const HomePage = () => {
               title={item.title}
               subTitle={item.subTitle}
               description={item.description}
-              img={item.image.url}
+              img={item.image? item.image.url:""}
               onDelete={handlDeleteFromInitialCardArr}
               onEdit={handlEditFromInitialCardArr}
             />

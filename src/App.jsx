@@ -5,17 +5,21 @@ import {
   createTheme,
   Switch,
   CssBaseline,
+  AppBar,
 } from "@mui/material";
 
-
- import { ToastContainer } from "react-toastify";
-
+import { ToastContainer } from "react-toastify";
 
 import "./App.css";
 import MuiNavbar from "../src/Navbar/MuiNavbar";
-import Router from "./routes/Router";
+import MuiFooter from "./Navbar/MuiFooter";
 
- const light = {
+import TableFooter from "@mui/material/TableFooter";
+
+import Router from "./routes/Router";
+import { useSelector } from "react-redux";
+
+const light = {
   palette: {
     mode: "light",
   },
@@ -23,16 +27,15 @@ import Router from "./routes/Router";
 
 const dark = {
   palette: {
-    mode: "dark", 
-  
+    mode: "dark",
   },
-}; 
+};
 
 function App() {
-  const [isDarkTheme, setIsDarkTheme] = useState(false); 
-   const onThemeChange = () => {
-    setIsDarkTheme(!isDarkTheme);
-  }; 
+  const isDarkTheme = useSelector(
+    (bigPie) => bigPie.darkThemeSlice.isDarkTheme
+  );
+
   return (
     <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light)}>
       <CssBaseline />
@@ -51,12 +54,13 @@ function App() {
       <Container>
         <header>
           <MuiNavbar />{" "}
-          {<Switch checked={isDarkTheme} onChange={onThemeChange} />}
         </header>
         <main>
           <Router />
         </main>
-        <footer></footer>
+        <footer>
+          <MuiFooter></MuiFooter>
+        </footer>
       </Container>
     </ThemeProvider>
   );

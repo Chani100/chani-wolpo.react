@@ -4,8 +4,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -20,6 +19,8 @@ import validateLoginSchema from "../validation/loginValidation";
 import ROUTES from "../routes/ROUTES";
 import axios from "axios";
 import { toast } from "react-toastify";
+import CachedIcon from "@mui/icons-material/Cached";
+
 
 const LoginPage = () => {
   const [inputState, setInputState] = useState({
@@ -105,11 +106,25 @@ const LoginPage = () => {
                 </Alert>
               )}
             </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
+            <Grid item xs={12} sm={6}>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ mt: 1, mb: 1 }}
+                color="primary"
+                href={ROUTES.HOME}
+              >
+                CANCEL
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 1 }}
+                href={ROUTES.LOGIN}
+                endIcon={<CachedIcon />}
+              ></Button>
             </Grid>
           </Grid>
           <Button

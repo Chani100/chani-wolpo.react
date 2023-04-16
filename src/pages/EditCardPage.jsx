@@ -21,7 +21,8 @@ import CreateIcon from "@mui/icons-material/Create";
 
 import { CircularProgress } from "@mui/material";
 import axios from "axios";
-
+import atom from "../logo.svg";
+import { toast } from "react-toastify";
 const EditCardPage = () => {
   const { id } = useParams();
 
@@ -33,20 +34,44 @@ const EditCardPage = () => {
       try {
         const errors = validateEditCardParamsSchema({ id });
         if (errors) {
-          /* navigate("*"); */
+          navigate("*");
           return;
         }
-        const { data } = await axios.get("/cards/card" + id);
-       setInputState(data); 
+        const { data } = await axios.get("/cards/card/" + id);
+        let newInputState = {
+          ...data,
+        };
+        if (data.image && data.image.url) {
+          newInputState.url = data.image.url;
+        } else {
+          newInputState.url = "";
+        }
+        if (data.image && data.image.alt) {
+          newInputState.alt = data.image.alt;
+        } else {
+          newInputState.alt = "";
+        }
+        delete newInputState.image;
+        delete newInputState.likes;
+        delete newInputState._id;
+        delete newInputState.user_id;
+        delete newInputState.bizNumber;
+        delete newInputState.createdAt;
+        setInputState(newInputState);
       } catch (err) {}
     })();
   }, [id]);
-  const handeleBtnClick = () => {
-    const joiResponse = validateEditCardSchema(inputState);
+  const handeleBtnClick = async (ev) => {
+    try {
+      const joiResponse = validateEditCardSchema(inputState);
 
-    setinputsErrorState(joiResponse);
-    if (!joiResponse) {
-      navigate(ROUTES.HOME);
+      setinputsErrorState(joiResponse);
+      if (!joiResponse) {
+        await axios.put("/cards/" + id, inputState);
+        navigate(ROUTES.HOME);
+      }
+    } catch (err) {
+      toast.error("errrrrrrrrrrror");
     }
   };
   const handleInputChange = (ev) => {
@@ -83,8 +108,8 @@ const EditCardPage = () => {
             maxHeight: { xs: 233, md: 167 },
             maxWidth: { xs: 350, md: 250 },
           }}
-          alt="The house from the offer."
-          src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
+          alt={inputState.alt ? inputState.alt : ""}
+          src={inputState.url ? inputState.url : atom}
         />
 
         <Box component="div" noValidate sx={{ mt: 3 }}>
@@ -93,16 +118,16 @@ const EditCardPage = () => {
               <TextField
                 required
                 fullWidth
-                id="img"
-                label="Img "
-                name="img"
-                autoComplete="img"
-                value={inputState.img}
+                id="url"
+                label="url "
+                name="url"
+                autoComplete="url"
+                value={inputState.url ? inputState.url : " "}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.img && (
+              {inputsErrorState && inputsErrorState.url && (
                 <Alert severity="warning">
-                  {inputsErrorState.img.map((item) => (
+                  {inputsErrorState.url.map((item) => (
                     <div key={"img-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -131,17 +156,17 @@ const EditCardPage = () => {
               <TextField
                 required
                 fullWidth
-                id="price"
-                label="Price "
-                name="price"
-                autoComplete="price"
-                value={inputState.price}
+                id="subTitle"
+                label="SubTitle "
+                name="subTitle"
+                autoComplete="subTitle"
+                value={inputState.subTitle}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.price && (
+              {inputsErrorState && inputsErrorState.subTitle && (
                 <Alert severity="warning">
-                  {inputsErrorState.price.map((item) => (
-                    <div key={"price-errors" + item}>{item}</div>
+                  {inputsErrorState.subTitle.map((item) => (
+                    <div key={"subTitle-errors" + item}>{item}</div>
                   ))}
                 </Alert>
               )}
@@ -161,6 +186,44 @@ const EditCardPage = () => {
                 <Alert severity="warning">
                   {inputsErrorState.description.map((item) => (
                     <div key={"description-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="address"
+                label="Address"
+                name="address"
+                autoComplete="address"
+                value={inputState.address}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.address && (
+                <Alert severity="warning">
+                  {inputsErrorState.address.map((item) => (
+                    <div key={"address-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="phone"
+                label="Phone"
+                name="phone"
+                autoComplete="phone"
+                value={inputState.phone}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.phone && (
+                <Alert severity="warning">
+                  {inputsErrorState.phone.map((item) => (
+                    <div key={"phone-errors" + item}>{item}</div>
                   ))}
                 </Alert>
               )}

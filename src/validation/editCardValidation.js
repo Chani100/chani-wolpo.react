@@ -2,28 +2,17 @@ import Joi from "joi";
 import validation from "./validation";
 
 const editCardSchema = Joi.object({
-  img: Joi.string()
-
-    .min(8)
-    .max(150),
-
-  title: Joi.string()
-    /* .title({ tlds: { allow: false } }) */
-    .required()
-    .min(2)
-    .max(100),
-  price: Joi.number()
-    /*  .price({ tlds: { allow: false } }) */
-    .required(),
-  description: Joi.string()
-    /*  .description({ tlds: { allow: false } }) */
-    .required()
-    .min(10)
-    .max(150),
+  title: Joi.string().min(2).max(100).required(),
+  subTitle: Joi.string().min(2).max(256).required(),
+  description: Joi.string().min(10).max(150).required(),
+  address: Joi.string().min(2).max(256).required(),
+  phone: Joi.string().min(9).max(14).required(),
+  url: Joi.string().min(6).max(1024).allow(""),
+  alt: Joi.string().min(2).max(256).allow(""),
 });
 
 const editCardParamsSchema = Joi.object({
-  id: Joi.string().min(1).required,
+  id: Joi.string().min(1).required(),
 });
 const validateEditCardSchema = (userInput) =>
   validation(editCardSchema, userInput);

@@ -18,16 +18,29 @@ import Alert from "@mui/material/Alert";
 import ROUTES from "../routes/ROUTES";
 import axios from "axios";
 import { toast } from "react-toastify";
+import CachedIcon from "@mui/icons-material/Cached";
 
 const RegisterPage = () => {
   const [inputState, setInputState] = useState({
     firstName: "",
+    middleName: "",
     lastName: "",
+    phone: "",
     email: "",
     password: "",
+    imageUrl: "",
+    imageAlt: "",
+    state: "",
+    country: "",
+    city: "",
+    street: "",
+    houseNumber: "",
+    zipCode: "",
+    biz: "",
   });
   const [inputsErrorState, setinputsErrorState] = useState(null);
   const navigate = useNavigate();
+
   const handeleBtnClick = async (ev) => {
     try {
       const joiResponse = validateRegisterSchema(inputState);
@@ -36,18 +49,32 @@ const RegisterPage = () => {
       if (joiResponse) {
         return;
       }
-      const { data } = await axios.post(
-        "/users/register",
-        {
-          name: inputState.firstName + " " + inputState.lastName,
-          email: inputState.email,
-          password: inputState.password,
-        }
-      );
+
+      /* const { data } = */ await axios.post("/users/register", {
+        firstName: inputState.firstName,
+        middleName: inputState.middleName,
+        lastName: inputState.lastName,
+        phone: inputState.phone,
+        email: inputState.email,
+        password: inputState.password,
+        imageUrl: inputState.imageUrl,
+        imageAlt: inputState.imageAlt,
+        state: inputState.state,
+        country: inputState.country,
+        city: inputState.city,
+        street: inputState.street,
+        houseNumber: inputState.houseNumber,
+        zipCode: inputState.zipCode,
+        biz: inputState.biz,
+      });
 
       navigate(ROUTES.LOGIN);
-    } catch (err) {  toast.error("registered user");}
+    } catch (err) {
+      console.log("error from axios", err.response.data);
+      toast.error("registered user");
+    }
   };
+
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
@@ -94,6 +121,24 @@ const RegisterPage = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                fullWidth
+                id="middleName"
+                label="Middle Name"
+                name="middleName"
+                autoComplete="family-name"
+                value={inputState.middleName}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.middleName && (
+                <Alert severity="warning">
+                  {inputsErrorState.middleName.map((item) => (
+                    <div key={"middleName-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
                 required
                 fullWidth
                 id="lastName"
@@ -111,7 +156,26 @@ const RegisterPage = () => {
                 </Alert>
               )}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="phone"
+                label="Phone"
+                name="phone"
+                autoComplete="phone"
+                value={inputState.phone}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.phone && (
+                <Alert severity="warning">
+                  {inputsErrorState.phone.map((item) => (
+                    <div key={"phone-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <TextField
                 required
                 fullWidth
@@ -130,7 +194,7 @@ const RegisterPage = () => {
                 </Alert>
               )}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 required
                 fullWidth
@@ -150,21 +214,219 @@ const RegisterPage = () => {
                 </Alert>
               )}
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                id="imageUrl"
+                label="Image Url "
+                name="imageUrl"
+                autoComplete="imageUrl"
+                value={inputState.imageUrl}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.imageUrl && (
+                <Alert severity="warning">
+                  {inputsErrorState.imageUrl.map((item) => (
+                    <div key={"imageUrl-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                id="imageAlt"
+                label="Image Alt "
+                name="imageAlt"
+                autoComplete="imageAlt"
+                value={inputState.imageAlt}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.imageAlt && (
+                <Alert severity="warning">
+                  {inputsErrorState.imageAlt.map((item) => (
+                    <div key={"imageAlt-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                id="state"
+                label="State "
+                name="state"
+                autoComplete="state"
+                value={inputState.state}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.state && (
+                <Alert severity="warning">
+                  {inputsErrorState.state.map((item) => (
+                    <div key={"state-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="country"
+                label="Country "
+                name="country"
+                autoComplete="country"
+                value={inputState.country}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.country && (
+                <Alert severity="warning">
+                  {inputsErrorState.country.map((item) => (
+                    <div key={"country-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="city"
+                label="City "
+                name="city"
+                autoComplete="city"
+                value={inputState.city}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.city && (
+                <Alert severity="warning">
+                  {inputsErrorState.city.map((item) => (
+                    <div key={"city-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="street"
+                label="Street "
+                name="street"
+                autoComplete="street"
+                value={inputState.street}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.street && (
+                <Alert severity="warning">
+                  {inputsErrorState.street.map((item) => (
+                    <div key={"street-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>{" "}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                fullWidth
+                id="houseNumber"
+                label="House Number "
+                name="houseNumber"
+                autoComplete="houseNumber"
+                value={inputState.houseNumber}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.houseNumber && (
+                <Alert severity="warning">
+                  {inputsErrorState.houseNumber.map((item) => (
+                    <div key={"houseNumber-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>{" "}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                id="zipCode"
+                label="Zip Code "
+                name="zipCode"
+                autoComplete="zipCode"
+                value={inputState.zipCode}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.zipCode && (
+                <Alert severity="warning">
+                  {inputsErrorState.zipCode.map((item) => (
+                    <div key={"zipCode-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>{" "}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                id="biz"
+                label="Biz "
+                name="biz"
+                autoComplete="biz"
+                value={inputState.biz}
+                onChange={handleInputChange}
+              />
+              {inputsErrorState && inputsErrorState.biz && (
+                <Alert severity="warning">
+                  {inputsErrorState.biz.map((item) => (
+                    <div key={"biz-errors" + item}>{item}</div>
+                  ))}
+                </Alert>
+              )}
+            </Grid>
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+                label="Signup as business."
               />
             </Grid>
+            {/*  <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 1 }}
+                onClick={handeleCANCELClick}
+              >
+                CANCEL
+              </Button> */}
+            <Grid item xs={12} sm={6}>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ mt: 1, mb: 1 }}
+                color="primary"
+                href={ROUTES.HOME}
+              >
+                CANCEL
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Button
+                size="large"
+                Large
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 1 }}
+                href={ROUTES.REGISTER}
+                endIcon={<CachedIcon />}
+              ></Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 1 }}
+                onClick={handeleBtnClick}
+              >
+                Sign Up
+              </Button>
+            </Grid>
           </Grid>
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handeleBtnClick}
-          >
-            Sign Up
-          </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to={ROUTES.LOGIN}>

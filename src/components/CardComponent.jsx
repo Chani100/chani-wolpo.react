@@ -7,11 +7,14 @@ import {
   Typography,
   CardActions,
   Button,
+  IconButton,
 } from "@mui/material";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
 import CreateIcon from "@mui/icons-material/Create";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PhoneIcon from "@mui/icons-material/Phone";
 const CardComponent = ({
   id /* address, */ /* bizNumber,createdAt, */,
   /*  likes,phone, */ img,
@@ -37,14 +40,12 @@ const CardComponent = ({
         <Typography>{description}</Typography>
       </CardContent>
       <CardActions>
-        <Button
-          className="buttonBuyNow"
-          variant="outlined"
-          color="primary"
-          endIcon={<ShoppingCartOutlinedIcon />}
-        >
-          buy now
-        </Button>
+        <IconButton color="error" aria-label="add an alarm">
+          <PhoneIcon />
+        </IconButton>
+        <IconButton color="error" aria-label="add an alarm">
+          <FavoriteIcon />
+        </IconButton>
         <Button
           variant="outlined"
           color="error"
