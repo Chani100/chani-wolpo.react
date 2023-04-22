@@ -8,6 +8,7 @@ import {
   CardActions,
   Button,
   IconButton,
+  Box,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,14 +16,24 @@ import PropTypes from "prop-types";
 import CreateIcon from "@mui/icons-material/Create";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PhoneIcon from "@mui/icons-material/Phone";
+import { Fragment } from "react";
+
+import { useSelector } from "react-redux";
+import axios from "axios";
 const CardComponent = ({
-  id /* address, */ /* bizNumber,createdAt, */,
-  /*  likes,phone, */ img,
+  id,
+  img,
   title,
   subTitle,
-  description,
+  phone,
+  address,
+  cardNumber,
   onDelete,
   onEdit,
+  canEdit,
+  canDelete,
+  canlogin,
+  onDeletefav,
 }) => {
   const handleBtnDeleteClick = () => {
     onDelete(id);
@@ -30,48 +41,95 @@ const CardComponent = ({
   const handleBtnEditClick = () => {
     onEdit(id);
   };
+  const isLoggedIn = useSelector((bigState) => bigState.authSlice.isLoggedIn);
+
+  const handleFavBtnClick = async () => {
+    try {
+      await axios.patch("/cards/card-like/" + id);
+      onDeletefav(id);
+    } catch (err) {
+      console.log("error when change fav", err.response.data);
+    }
+  };
   return (
     <Card square raised>
       <CardActionArea>
         <CardMedia component="img" image={img} className="imgcard" />
       </CardActionArea>
-      <CardHeader title={title} subheader={`$ ${subTitle}`} />
+      <CardHeader title={title} subheader={`${subTitle}`} />
       <CardContent>
-        <Typography>{description}</Typography>
+        <Typography>{`Phone: ${phone}`}</Typography>
+        <Typography>{`Address: ${address}`}</Typography>
+        <Typography>{`Card Number: ${cardNumber}`}</Typography>
       </CardContent>
       <CardActions>
-        <IconButton color="error" aria-label="add an alarm">
-          <PhoneIcon />
-        </IconButton>
-        <IconButton color="error" aria-label="add an alarm">
-          <FavoriteIcon />
-        </IconButton>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={handleBtnDeleteClick}
-          endIcon={<DeleteIcon />}
-        >
-          Delet
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={handleBtnEditClick}
-          endIcon={<CreateIcon />}
-        >
-          Edit
-        </Button>
+        <Box sx={{ display: "flex", flex: 1, justifyContent: "flex-start" }}>
+           <Button
+            variant="text"
+            color="primary"
+            sx={{
+              flexGrow: 1,
+              flex: 1,
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+            onClick={handleFavBtnClick}
+          >
+            <FavoriteIcon
+              sx={{
+                flexGrow: 1,
+                flex: 1,
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            />
+          </Button> 
+          {canDelete ? (
+            <Fragment>
+              <IconButton
+                color="primary"
+                aria-label="add to shopping cart"
+                onClick={handleBtnDeleteClick}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Fragment>
+          ) : (
+            ""
+          )}
+          {canEdit ? (
+            <Fragment>
+              <IconButton
+                color="primary"
+                aria-label="add to shopping cart"
+                onClick={handleBtnEditClick}
+              >
+                <CreateIcon />
+              </IconButton>
+            </Fragment>
+          ) : (
+            ""
+          )}
+        </Box>
+        <Box sx={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
+          <IconButton color="error" aria-label="add an alarm">
+            <PhoneIcon />
+          </IconButton>
+        </Box>
+          {/* <Favicon isLoggedIn={isLoggedIn} />  */}
       </CardActions>
     </Card>
   );
 };
+
 CardComponent.propTypes = {
   id: PropTypes.string.isRequired,
   img: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   subTitle: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
+  address: PropTypes.string.isRequired,
+
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,
 };

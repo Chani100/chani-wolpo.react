@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,74 +11,116 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-
 import validateRegisterSchema from "../validation/registerValidation";
 import Alert from "@mui/material/Alert";
 import ROUTES from "../routes/ROUTES";
 import axios from "axios";
 import { toast } from "react-toastify";
 import CachedIcon from "@mui/icons-material/Cached";
-
 const RegisterPage = () => {
-  const [inputState, setInputState] = useState({
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    password: "",
-    imageUrl: "",
-    imageAlt: "",
-    state: "",
-    country: "",
-    city: "",
-    street: "",
-    houseNumber: "",
-    zipCode: "",
-    biz: "",
-  });
-  const [inputsErrorState, setinputsErrorState] = useState(null);
-  const navigate = useNavigate();
+   const [inputState, setInputState] = useState({
+     firstName: "",
+     middleName: "",
+     lastName: "",
+     phone: "",
+     email: "",
+     password: "",
+     imageUrl: "",
+     imageAlt: "",
+     state: "",
+     country: "",
+     city: "",
+     street: "",
+     houseNumber: "",
+     zipCode: "",
+     biz: false,
+   });
+   let joiResponse = validateRegisterSchema(inputState);
 
-  const handeleBtnClick = async (ev) => {
-    try {
-      const joiResponse = validateRegisterSchema(inputState);
+   const [inputsErrorState, setinputsErrorState] = useState(null);
+   const navigate = useNavigate();
+   const handeleBtnClick = async (ev) => {
+     try {
+       joiResponse = validateRegisterSchema(inputState);
 
-      setinputsErrorState(joiResponse);
-      if (joiResponse) {
-        return;
-      }
+       if (joiResponse) {
+         return;
+       }
+       await axios.post("/users/register", {
+         firstName: inputState.firstName,
+         middleName: inputState.middleName,
+         lastName: inputState.lastName,
+         phone: inputState.phone,
+         email: inputState.email,
+         password: inputState.password,
+         imageUrl: inputState.imageUrl,
+         imageAlt: inputState.imageAlt,
+         state: inputState.state,
+         country: inputState.country,
+         city: inputState.city,
+         street: inputState.street,
+         houseNumber: inputState.houseNumber,
+         zipCode: inputState.zipCode,
+         biz: inputState.biz,
+       });
+       navigate(ROUTES.LOGIN);
+     } catch (err) {
+       console.log("error from axios", err.response.data);
+       toast.error("registered user");
+     }
+   };
+   const handleInputChange = (ev) => {
+     let newInputState = JSON.parse(JSON.stringify(inputState));
+     newInputState[ev.target.id] = ev.target.value;
+     setInputState(newInputState);
+     joiResponse = validateRegisterSchema(inputState);
+     setinputsErrorState(joiResponse);
 
-      /* const { data } = */ await axios.post("/users/register", {
-        firstName: inputState.firstName,
-        middleName: inputState.middleName,
-        lastName: inputState.lastName,
-        phone: inputState.phone,
-        email: inputState.email,
-        password: inputState.password,
-        imageUrl: inputState.imageUrl,
-        imageAlt: inputState.imageAlt,
-        state: inputState.state,
-        country: inputState.country,
-        city: inputState.city,
-        street: inputState.street,
-        houseNumber: inputState.houseNumber,
-        zipCode: inputState.zipCode,
-        biz: inputState.biz,
-      });
+     // activateButton = true;
+     // Object.keys(canClick).forEach((key) => {
+     //   activateButton = activateButton && canClick[key];
+     // });
+   };
+   const handleBizChange = (ev) => {
+     let newInputState = JSON.parse(JSON.stringify(inputState));
+     newInputState["biz"] = ev.target.checked;
+     setInputState(newInputState);
+   };
+   const shabmit = () => {
+     let newInputState = JSON.parse(JSON.stringify(inputState));
+     newInputState = {
+       firstName: "",
+       middleName: "",
+       lastName: "",
+       phone: "",
+       email: "",
+       password: "",
+       imageUrl: "",
+       imageAlt: "",
+       state: "",
+       country: "",
+       city: "",
+       street: "",
+       houseNumber: "",
+       zipCode: "",
+       biz: false,
+     };
 
-      navigate(ROUTES.LOGIN);
-    } catch (err) {
-      console.log("error from axios", err.response.data);
-      toast.error("registered user");
-    }
-  };
+     setInputState(newInputState);
 
-  const handleInputChange = (ev) => {
-    let newInputState = JSON.parse(JSON.stringify(inputState));
-    newInputState[ev.target.id] = ev.target.value;
-    setInputState(newInputState);
-  };
+     joiResponse = validateRegisterSchema(inputState);
+     if (!joiResponse) {
+       return;
+     }
+
+     let newjoiResponse = JSON.parse(JSON.stringify(joiResponse));
+     Object.keys(newjoiResponse).forEach((index) => {
+       newjoiResponse[index] = "";
+     });
+     setinputsErrorState(newjoiResponse);
+   };
+
+ 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -110,6 +151,7 @@ const RegisterPage = () => {
                 autoFocus
                 value={inputState.firstName}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.firstName && (
                 <Alert severity="warning">
@@ -147,6 +189,7 @@ const RegisterPage = () => {
                 autoComplete="family-name"
                 value={inputState.lastName}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.lastName && (
                 <Alert severity="warning">
@@ -166,6 +209,7 @@ const RegisterPage = () => {
                 autoComplete="phone"
                 value={inputState.phone}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.phone && (
                 <Alert severity="warning">
@@ -185,6 +229,7 @@ const RegisterPage = () => {
                 autoComplete="email"
                 value={inputState.email}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.email && (
                 <Alert severity="warning">
@@ -205,6 +250,7 @@ const RegisterPage = () => {
                 autoComplete="new-password"
                 value={inputState.password}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.password && (
                 <Alert severity="warning">
@@ -223,6 +269,7 @@ const RegisterPage = () => {
                 autoComplete="imageUrl"
                 value={inputState.imageUrl}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.imageUrl && (
                 <Alert severity="warning">
@@ -241,6 +288,7 @@ const RegisterPage = () => {
                 autoComplete="imageAlt"
                 value={inputState.imageAlt}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.imageAlt && (
                 <Alert severity="warning">
@@ -259,6 +307,7 @@ const RegisterPage = () => {
                 autoComplete="state"
                 value={inputState.state}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.state && (
                 <Alert severity="warning">
@@ -278,6 +327,7 @@ const RegisterPage = () => {
                 autoComplete="country"
                 value={inputState.country}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.country && (
                 <Alert severity="warning">
@@ -297,6 +347,7 @@ const RegisterPage = () => {
                 autoComplete="city"
                 value={inputState.city}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.city && (
                 <Alert severity="warning">
@@ -316,6 +367,7 @@ const RegisterPage = () => {
                 autoComplete="street"
                 value={inputState.street}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.street && (
                 <Alert severity="warning">
@@ -335,6 +387,7 @@ const RegisterPage = () => {
                 autoComplete="houseNumber"
                 value={inputState.houseNumber}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.houseNumber && (
                 <Alert severity="warning">
@@ -353,6 +406,7 @@ const RegisterPage = () => {
                 autoComplete="zipCode"
                 value={inputState.zipCode}
                 onChange={handleInputChange}
+                openButton={false}
               />
               {inputsErrorState && inputsErrorState.zipCode && (
                 <Alert severity="warning">
@@ -362,38 +416,19 @@ const RegisterPage = () => {
                 </Alert>
               )}
             </Grid>{" "}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                id="biz"
-                label="Biz "
-                name="biz"
-                autoComplete="biz"
-                value={inputState.biz}
-                onChange={handleInputChange}
-              />
-              {inputsErrorState && inputsErrorState.biz && (
-                <Alert severity="warning">
-                  {inputsErrorState.biz.map((item) => (
-                    <div key={"biz-errors" + item}>{item}</div>
-                  ))}
-                </Alert>
-              )}
-            </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                control={
+                  <Checkbox
+                    id="biz"
+                    value={inputState.biz}
+                    color="primary"
+                    onClick={handleBizChange}
+                  />
+                }
                 label="Signup as business."
               />
             </Grid>
-            {/*  <Button
-                fullWidth
-                variant="contained"
-                sx={{ mt: 1, mb: 1 }}
-                onClick={handeleCANCELClick}
-              >
-                CANCEL
-              </Button> */}
             <Grid item xs={12} sm={6}>
               <Button
                 variant="contained"
@@ -408,11 +443,10 @@ const RegisterPage = () => {
             <Grid item xs={12} sm={6}>
               <Button
                 size="large"
-                Large
                 fullWidth
                 variant="contained"
                 sx={{ mt: 1, mb: 1 }}
-                href={ROUTES.REGISTER}
+                onClick={shabmit}
                 endIcon={<CachedIcon />}
               ></Button>
             </Grid>
@@ -421,13 +455,14 @@ const RegisterPage = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 1, mb: 1 }}
+                {...(!joiResponse ? { disabled: false } : { disabled: true })}
                 onClick={handeleBtnClick}
               >
                 Sign Up
               </Button>
             </Grid>
           </Grid>
-          <Grid container justifyContent="flex-end">
+          {/*  <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to={ROUTES.LOGIN}>
                 <Typography variant="body2">
@@ -435,7 +470,7 @@ const RegisterPage = () => {
                 </Typography>
               </Link>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Box>
       </Box>
     </Container>

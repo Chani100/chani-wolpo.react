@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   ThemeProvider,
@@ -6,18 +6,20 @@ import {
   Switch,
   CssBaseline,
   AppBar,
+  CircularProgress,
 } from "@mui/material";
 
 import { ToastContainer } from "react-toastify";
 
 import "./App.css";
-import MuiNavbar from "../src/Navbar/MuiNavbar";
-import MuiFooter from "./Navbar/MuiFooter";
+import MuiNavbar from "../src/components/Navbar/MuiNavbar";
+import FooterComp from "../src/components/Navbar/MuiFooter";
 
 import TableFooter from "@mui/material/TableFooter";
 
 import Router from "./routes/Router";
 import { useSelector } from "react-redux";
+import useLoggedIn from "./hooks/useLoggedIn";
 
 const light = {
   palette: {
@@ -32,6 +34,14 @@ const dark = {
 };
 
 function App() {
+   const [isLoading, setIsLoading] = useState(true);
+   const loggedIn = useLoggedIn();
+   useEffect(() => {
+     (async () => {
+       await loggedIn();
+       setIsLoading(false);
+     })();
+   }, []);
   const isDarkTheme = useSelector(
     (bigPie) => bigPie.darkThemeSlice.isDarkTheme
   );
@@ -55,11 +65,10 @@ function App() {
         <header>
           <MuiNavbar />{" "}
         </header>
-        <main>
-          <Router />
-        </main>
+        <main> {isLoading ? <CircularProgress /> : <Router />}</main>
+
         <footer>
-          <MuiFooter></MuiFooter>
+          <FooterComp />
         </footer>
       </Container>
     </ThemeProvider>

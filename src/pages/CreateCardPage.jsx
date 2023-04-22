@@ -1,91 +1,104 @@
-import { useState, useEffect } from "react";
-
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-
 import Alert from "@mui/material/Alert";
-import { useNavigate, useParams } from "react-router-dom";
-import validateEditCardSchema, {
-  validateEditCardParamsSchema,
-} from "../validation/editCardValidation";
-import ROUTES from "../routes/ROUTES";
-import CreateIcon from "@mui/icons-material/Create";
-
-import { CircularProgress } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
+import ROUTES from "../routes/ROUTES";
+import validateCreateSchema from "../validation/editCardValidation";
+import CachedIcon from "@mui/icons-material/Cached";
 import atom from "../logo.svg";
 import { toast } from "react-toastify";
-const EditCardPage = () => {
-  const { id } = useParams();
 
-  const [inputState, setInputState] = useState(null);
-  const [inputsErrorState, setinputsErrorState] = useState({});
+const CreateCardPage = () => {
+  
+  const [inputState, setInputState] = useState({
+    url: "",
+    alt: "",
+    title: "",
+    subTitle: "",
+    description: "",
+    phone: "",
+    email:"",
+   /*  wed:"", */
+    state:"",
+    country:"",
+    city:"",
+    street:"",
+    houseNumber:"",
+    /* zip:"", */
+  });
+   let joiResponse = validateCreateSchema(inputState);
+  const [inputsErrorsState, setInputsErrorsState] = useState(null);
   const navigate = useNavigate();
-  useEffect(() => {
-    (async () => {
-      try {
-        const errors = validateEditCardParamsSchema({ id });
-        if (errors) {
-          navigate("*");
-          return;
-        }
-        const { data } = await axios.get("/cards/card/" + id);
-        let newInputState = {
-          ...data,
-        };
-        if (data.image && data.image.url) {
-          newInputState.url = data.image.url;
-        } else {
-          newInputState.url = "";
-        }
-        if (data.image && data.image.alt) {
-          newInputState.alt = data.image.alt;
-        } else {
-          newInputState.alt = "";
-        }
-         delete newInputState.image;
-        delete newInputState.likes;
-        delete newInputState._id;
-        delete newInputState.user_id;
-        delete newInputState.bizNumber;
-        delete newInputState.createdAt; 
-        delete newInputState.address 
-        setInputState(newInputState);
-      } catch (err) {}
-    })();
-  }, [id]);
-  const handeleBtnClick = async (ev) => {
+  
+  const handleSaveBtnClick = async (ev) => {
     try {
-      const joiResponse = validateEditCardSchema(inputState);
-setinputsErrorState(joiResponse);
+      const joiResponse = validateCreateSchema(inputState);
+      setInputsErrorsState(joiResponse);
+      console.log(joiResponse);
       if (!joiResponse) {
-        await axios.put("/cards/" + id, inputState);
+        //move to homepage
+        await axios.post("/cards/", inputState);
+        toast.success("The card was successfully added!");
         navigate(ROUTES.HOME);
       }
     } catch (err) {
-      toast.error("errrrrrrrrrrror");
+      /* console.log("err", err); */
+      toast.error("errrrrrrrrrrrrrrrror");
     }
   };
+const shabmit = () => {
+  let newInputState = JSON.parse(JSON.stringify(inputState));
+  newInputState = {
+    url: "",
+    alt: "",
+    title: "",
+    subTitle: "",
+    description: "",
+    phone: "",
+    email: "",
+    /*  wed:"", */
+    state: "",
+    country: "",
+    city: "",
+    street: "",
+    houseNumber: "",
+    /* zip:"", */
+  };
+  setInputState(newInputState);
+
+  joiResponse = validateCreateSchema(inputState);
+  if (!joiResponse) {
+    return;
+  }
+
+  let newjoiResponse = JSON.parse(JSON.stringify(joiResponse));
+  Object.keys(newjoiResponse).forEach((index) => {
+    newjoiResponse[index] = "";
+  });
+};
+  const handleCancelBtnClick = (ev) => {
+    //move to homepage
+    navigate(ROUTES.HOME);
+  };
+
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
   };
 
-  if (!inputState) {
-    return <CircularProgress color="secondary" />;
-  }
+  
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,
@@ -95,10 +108,10 @@ setinputsErrorState(joiResponse);
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <CreateIcon />
+          <EditIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Edit Card
+          Create card
         </Typography>
         <Box
           component="img"
@@ -111,24 +124,22 @@ setinputsErrorState(joiResponse);
           alt={inputState.alt ? inputState.alt : ""}
           src={inputState.url ? inputState.url : atom}
         />
-
         <Box component="div" noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                required
                 fullWidth
                 id="url"
-                label="url "
+                label="Url"
                 name="url"
                 autoComplete="url"
-                value={inputState.url ? inputState.url : " "}
+                value={inputState.url}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.url && (
+              {inputsErrorsState && inputsErrorsState.url && (
                 <Alert severity="warning">
-                  {inputsErrorState.url.map((item) => (
-                    <div key={"img-errors" + item}>{item}</div>
+                  {inputsErrorsState.url.map((item) => (
+                    <div key={"url-errors" + item}>{item}</div>
                   ))}
                 </Alert>
               )}
@@ -144,9 +155,9 @@ setinputsErrorState(joiResponse);
                 value={inputState.title}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.title && (
+              {inputsErrorsState && inputsErrorsState.title && (
                 <Alert severity="warning">
-                  {inputsErrorState.title.map((item) => (
+                  {inputsErrorsState.title.map((item) => (
                     <div key={"title-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -156,16 +167,17 @@ setinputsErrorState(joiResponse);
               <TextField
                 required
                 fullWidth
-                id="subTitle"
-                label="SubTitle "
                 name="subTitle"
+                label="Sub title"
+                type="text"
+                id="subTitle"
                 autoComplete="subTitle"
                 value={inputState.subTitle}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.subTitle && (
+              {inputsErrorsState && inputsErrorsState.subTitle && (
                 <Alert severity="warning">
-                  {inputsErrorState.subTitle.map((item) => (
+                  {inputsErrorsState.subTitle.map((item) => (
                     <div key={"subTitle-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -175,16 +187,16 @@ setinputsErrorState(joiResponse);
               <TextField
                 required
                 fullWidth
-                id="description"
-                label="Description"
                 name="description"
+                label="Description"
+                id="description"
                 autoComplete="description"
                 value={inputState.description}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.description && (
+              {inputsErrorsState && inputsErrorsState.description && (
                 <Alert severity="warning">
-                  {inputsErrorState.description.map((item) => (
+                  {inputsErrorsState.description.map((item) => (
                     <div key={"description-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -195,17 +207,17 @@ setinputsErrorState(joiResponse);
               <TextField
                 required
                 fullWidth
-                id="phone"
-                label="Phone"
                 name="phone"
+                label="Phone"
+                id="phone"
                 autoComplete="phone"
                 value={inputState.phone}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.phone && (
+              {inputsErrorsState && inputsErrorsState.description && (
                 <Alert severity="warning">
-                  {inputsErrorState.phone.map((item) => (
-                    <div key={"phone-errors" + item}>{item}</div>
+                  {inputsErrorsState.description.map((item) => (
+                    <div key={"description-errors" + item}>{item}</div>
                   ))}
                 </Alert>
               )}
@@ -220,9 +232,9 @@ setinputsErrorState(joiResponse);
                 value={inputState.state}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.state && (
+              {inputsErrorsState && inputsErrorsState.state && (
                 <Alert severity="warning">
-                  {inputsErrorState.state.map((item) => (
+                  {inputsErrorsState.state.map((item) => (
                     <div key={"state-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -239,9 +251,9 @@ setinputsErrorState(joiResponse);
                 value={inputState.country}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.country && (
+              {inputsErrorsState && inputsErrorsState.country && (
                 <Alert severity="warning">
-                  {inputsErrorState.country.map((item) => (
+                  {inputsErrorsState.country.map((item) => (
                     <div key={"country-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -258,9 +270,9 @@ setinputsErrorState(joiResponse);
                 value={inputState.city}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.city && (
+              {inputsErrorsState && inputsErrorsState.city && (
                 <Alert severity="warning">
-                  {inputsErrorState.city.map((item) => (
+                  {inputsErrorsState.city.map((item) => (
                     <div key={"city-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -277,9 +289,9 @@ setinputsErrorState(joiResponse);
                 value={inputState.street}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.street && (
+              {inputsErrorsState && inputsErrorsState.street && (
                 <Alert severity="warning">
-                  {inputsErrorState.street.map((item) => (
+                  {inputsErrorsState.street.map((item) => (
                     <div key={"street-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -296,9 +308,9 @@ setinputsErrorState(joiResponse);
                 value={inputState.houseNumber}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.houseNumber && (
+              {inputsErrorsState && inputsErrorsState.houseNumber && (
                 <Alert severity="warning">
-                  {inputsErrorState.houseNumber.map((item) => (
+                  {inputsErrorsState.houseNumber.map((item) => (
                     <div key={"houseNumber-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -314,9 +326,9 @@ setinputsErrorState(joiResponse);
                 value={inputState.zipCode}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.zipCode && (
+              {inputsErrorsState && inputsErrorsState.zipCode && (
                 <Alert severity="warning">
-                  {inputsErrorState.zipCode.map((item) => (
+                  {inputsErrorsState.zipCode.map((item) => (
                     <div key={"zipCode-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -333,9 +345,9 @@ setinputsErrorState(joiResponse);
                 value={inputState.email}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.email && (
+              {inputsErrorsState && inputsErrorsState.email && (
                 <Alert severity="warning">
-                  {inputsErrorState.email.map((item) => (
+                  {inputsErrorsState.email.map((item) => (
                     <div key={"email-errors" + item}>{item}</div>
                   ))}
                 </Alert>
@@ -351,36 +363,44 @@ setinputsErrorState(joiResponse);
                 value={inputState.web}
                 onChange={handleInputChange}
               />
-              {inputsErrorState && inputsErrorState.web && (
+              {inputsErrorsState && inputsErrorsState.web && (
                 <Alert severity="warning">
-                  {inputsErrorState.web.map((item) => (
+                  {inputsErrorsState.web.map((item) => (
                     <div key={"web-errors" + item}>{item}</div>
                   ))}
                 </Alert>
               )}
             </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <Button
+                size="large"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 1 }}
+                onClick={shabmit}
+                endIcon={<CachedIcon />}
+              ></Button>
+            </Grid>
             <Grid item xs={6}>
               <Button
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 1 }}
-                onClick={handeleBtnClick}
+                sx={{ mt: 1, mb: 1 }}
+                onClick={handleCancelBtnClick}
+              >
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 1 }}
+                onClick={handleSaveBtnClick}
               >
                 Save
               </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 1 }}
-                href={ROUTES.HOME}
-              >
-                cancelation
-              </Button>
-            </Grid>
-            <Grid container justifyContent="flex-end">
-              {/* <Grid item></Grid> */}
             </Grid>
           </Grid>
         </Box>
@@ -389,4 +409,4 @@ setinputsErrorState(joiResponse);
   );
 };
 
-export default EditCardPage;
+export default CreateCardPage;
