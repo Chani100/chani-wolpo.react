@@ -1,14 +1,15 @@
-import { Box, CircularProgress, Grid } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import CardComponent from "../components/CardComponent";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import useQueryParams from "../hooks/useQueryParams";
 import { useSelector } from "react-redux";
 import jwt_decode from "jwt-decode";
-import ROUTES from "../routes/ROUTES";
-import CreatComponentNew from "../components/Creatcomponents";
+
+import IconCreatComponen from "../components/IconCreatcomponents";
+
 const HomePage = () => {
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [cardsArr, setCardsArr] = useState(null);
@@ -53,7 +54,7 @@ const HomePage = () => {
   };
   useEffect(() => {
     filterFunc();
-   /*  canEdit(); */
+    /*  canEdit(); */
   }, [qparams.filter]);
   const handlDeleteFromInitialCardArr = async (id) => {
     try {
@@ -69,24 +70,29 @@ const HomePage = () => {
   const handlEditFromInitialCardArr = (id) => {
     navigate(`/edit/${id}`);
   };
+  const handlMoreInfo = (id) => {
+    navigate(`/moreInformation/${id}`);
+  };
   if (!cardsArr) {
     return <CircularProgress />;
   }
-   const delete1 = () => {};
+  const delete1 = () => {};
   return (
     <Box>
-      <h1>Welcome</h1>
-      <h3>
+      <Typography variant="h3">
+    Welcome
+    </Typography>
+      <Typography variant="h6">
         On this site you can view site cards if you are registered you can also
         choose favorites The site contains business cards of various
         entertainment sites throughout the country Want to add a card? Register
         as a business and you too can advertise your website! Once you've added
         a card, only you can edit and change its content (We can also delete...)
         Wishing you a pleasant time...
-      </h3>
+      </Typography>
       <Grid container spacing={2}>
         {cardsArr.map((item) => (
-          <Grid item xs={4} key={item._id + Date.now()}>
+          <Grid item sm={6} md={4} xs={12}  key={item._id + Date.now()}>
             <CardComponent
               id={item._id}
               cardNumber={item.bizNumber}
@@ -107,6 +113,7 @@ const HomePage = () => {
               img={item.image ? item.image.url : ""}
               onDelete={handlDeleteFromInitialCardArr}
               onEdit={handlEditFromInitialCardArr}
+              moreIn={handlMoreInfo}
               onDeletefav={delete1}
               canEdit={
                 payload &&
@@ -114,15 +121,16 @@ const HomePage = () => {
                 item.user_id == jwt_decode(localStorage.token)._id
               }
               canDelete={
-                payload && payload.isAdmin||
-                (payload.biz  &&
-                item.user_id == jwt_decode(localStorage.token)._id)
+                payload &&
+                (payload.isAdmin ||
+                  (payload.biz &&
+                    item.user_id == jwt_decode(localStorage.token)._id))
               }
             />
           </Grid>
         ))}
 
-        <CreatComponentNew canCreate={payload && payload.biz} />
+        <IconCreatComponen canCreate={payload && payload.biz} />
       </Grid>
     </Box>
   );

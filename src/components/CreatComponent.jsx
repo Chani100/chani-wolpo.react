@@ -1,64 +1,66 @@
 import { Alert, Grid, TextField } from "@mui/material";
 
 const RequiredF = [
-  "firstName",
-  "lastName",
-  "phone",
-  "email",
-  "password",
-  "country",
+ " title",
+ " subTitle",
+  "description",
+ " country",
   "city",
   "street",
   "houseNumber",
+  "phone",
+  "email",
 ];
 
-const RegisterComponent = ({
-  item,
-  inputState,
-  inputsErrorState,
-  onChange,
-}) => {
-  const isRequired = RequiredF.includes(item);
-  if (item === "biz") return;
-  return isRequired ? (
+const CreatCard = ({ item, inputState, onChange, inputsErrorState }) => {
+const isRequired = RequiredF.includes(item);
+ return isRequired ? (
     <Grid item xs={12}>
-      <TextField
-        required
+        <TextField
+       required
         fullWidth
-        id={item}
+         id={item}
+         label={item}
         name={item}
         type={item}
         value={inputState[item] ? inputState[item] : ""}
         onChange={onChange}
-      />
-      {inputsErrorState && inputsErrorState[item] && (
+       />
+ {inputsErrorState && inputsErrorState[item] && (
         <Alert severity="warning">
           {inputsErrorState[item].map((item) => (
             <div key={"{item}-errors" + item}>{item}</div>
           ))}
         </Alert>
-      )}
-    </Grid>
-  ) : (
-    <Grid item xs={12}>
-      <TextField
-     
+         )}
+        </Grid>
+      ):(
+        <Grid item xs={12}>
+        <TextField
         fullWidth
-        id={item}
-        label={item}
+         id={item}
+         label={item}
         name={item}
         type={item}
         value={inputState[item] ? inputState[item] : ""}
         onChange={onChange}
-      />{" "}
-      {inputsErrorState && inputsErrorState[item] && (
+       />
+ {inputsErrorState && inputsErrorState[item] && (
         <Alert severity="warning">
           {inputsErrorState[item].map((item) => (
             <div key={"{item}-errors" + item}>{item}</div>
           ))}
         </Alert>
+
       )}
-    </Grid>
-  );
+        
+
+
+</Grid>
+    
+ )
+
+
+  
 };
-export default RegisterComponent;
+export default CreatCard;

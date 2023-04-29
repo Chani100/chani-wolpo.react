@@ -1,33 +1,27 @@
 import { Alert, Grid, TextField } from "@mui/material";
 
-const RequiredF = [
-  "firstName",
-  "lastName",
-  "phone",
-  "email",
-  "password",
-  "country",
-  "city",
-  "street",
+const requiredF = [
+ " title",
+ " subTitle",
+  "description",
+ " country",
+ " city",
+ " street",
   "houseNumber",
+  "phone",
+ " email",
 ];
 
-const RegisterComponent = ({
-  item,
-  inputState,
-  inputsErrorState,
-  onChange,
-}) => {
-  const isRequired = RequiredF.includes(item);
-  if (item === "biz") return;
+const EditComponent = ({ item, inputState, onChange, inputsErrorState }) => {
+  const isRequired = requiredF.includes(item);
   return isRequired ? (
     <Grid item xs={12}>
       <TextField
         required
         fullWidth
         id={item}
+        label={item}
         name={item}
-        type={item}
         value={inputState[item] ? inputState[item] : ""}
         onChange={onChange}
       />
@@ -42,15 +36,13 @@ const RegisterComponent = ({
   ) : (
     <Grid item xs={12}>
       <TextField
-     
         fullWidth
         id={item}
         label={item}
         name={item}
-        type={item}
         value={inputState[item] ? inputState[item] : ""}
         onChange={onChange}
-      />{" "}
+      />
       {inputsErrorState && inputsErrorState[item] && (
         <Alert severity="warning">
           {inputsErrorState[item].map((item) => (
@@ -61,4 +53,5 @@ const RegisterComponent = ({
     </Grid>
   );
 };
-export default RegisterComponent;
+
+export default EditComponent;

@@ -6,33 +6,16 @@ import { Fragment } from "react";
 import { Box, IconButton } from "@mui/material";
 import axios from "axios";
 const Mycards = ({isBiz }) => {
-  /* const favCards = () => {await axios.patch ("/api/cards/card-like/:id")} */
+  
   const navigate = useNavigate();
   const handleIconeClick = async (ev) => {
-    /*  try {
-    const joiResponse = validateCreateSchema(inputState);
-    setInputsErrorsState(joiResponse);
-    console.log(joiResponse);
-    if (!joiResponse) { */
-    //move to homepage
-    /*  await */ axios.patch("/api/cards/card-like/:id");
+   
+    axios.patch("/api/cards/card-like/:id");
 
     toast.success("jjjjj!");
     navigate(ROUTES.HOME);
   };
-  /*  } catch (err) { */
-  /* console.log("err", err); */
-  /*  toast.error("errrrrrrrrrrrrrrrror"); */
-
-  /* useEffect(() => {
-    axios
-      .get("/cards/cards")
-      .then(({ data }) => {
-        filterFunc(data);
-      })) */
-  /*  const btnCraet = () => {
-    navigate(ROUTES.LOGIN);
-  }; */
+ 
   return (
     <Box sx={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
       {isBiz ? (

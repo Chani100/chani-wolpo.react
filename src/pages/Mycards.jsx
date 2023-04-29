@@ -10,7 +10,7 @@ import CardComponent from "../components/CardComponent";
 import { toast } from "react-toastify";
 import useQueryParams from "../hooks/useQueryParams";
 import { useSelector } from "react-redux";
-import CreatComponentNew from "../components/Creatcomponents";
+import IconCreatComponen from "../components/IconCreatcomponents";
 
 const MyCards = () => {
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
@@ -29,14 +29,14 @@ const MyCards = () => {
           dataArr.filter((card) =>
             card[1]["user_id"].includes(jwt_decode(localStorage.token)._id)
           )
-
-
-        ); 
+        );
       })
 
       .catch((err) => {
         console.log(err);
-       if (!cardsArr){ toast.error("You have no saved cards that you created!");}
+        if (!cardsArr) {
+          toast.error("You have no saved cards that you created!");
+        }
       });
   }, []);
 
@@ -67,6 +67,25 @@ const MyCards = () => {
   if (!cardsArr) {
     return <CircularProgress />;
   }
+  const handlDeleteFromInitialCardArr = async (id) => {
+    try {
+      await axios.delete("/cards/" + id);
+      setCardsArr((currentCardsArr) =>
+        currentCardsArr.filter((item) => item._id != id)
+      );
+
+      toast.success("The image has been successfully deleted");
+    } catch (err) {}
+  };
+
+  const handlEditFromInitialCardArr = (id) => {
+    navigate(`/edit/${id}`);
+  };
+  if (cardsArr == 0) {
+    toast.error(
+      "You haven't created tickets yet,Feel free to create a card and post it."
+    );
+  }
 
   return (
     <Box>
@@ -77,7 +96,7 @@ const MyCards = () => {
       </h3>
       <Grid container spacing={2}>
         {cardsArr.map((item) => (
-          <Grid item xs={4} key={item[1]._id + Date.now()}>
+          <Grid item sm={6} md={4} xs={12}  key={item[1]._id + Date.now()}>
             <CardComponent
               id={item[1]._id}
               phone={item[1].phone}
@@ -89,21 +108,25 @@ const MyCards = () => {
               subTitle={item[1].subTitle}
               description={item[1].description}
               img={item[1].image ? item[1].image.url : ""}
+              /* onDelete={handlDeleteFromInitialCardArr}
+              onEdit={handlEditFromInitialCardArr} */
+              onDelete={handlDeleteFromInitialCardArr}
+              onEdit={handlEditFromInitialCardArr}
               canEdit={
                 payload &&
-                ( payload.isAdmin||payload.biz) &&
+                (payload.isAdmin || payload.biz) &&
                 item[1].user_id == jwt_decode(localStorage.token)._id
               }
               canDelete={
-                ((payload && payload.isAdmin) ||
+                (payload && payload.isAdmin) ||
                 (payload.biz &&
-                  item[1].user_id == jwt_decode(localStorage.token)._id))
+                  item[1].user_id == jwt_decode(localStorage.token)._id)
               }
             />
           </Grid>
         ))}
 
-        <CreatComponentNew canCreate={payload && payload.biz} />
+        <IconCreatComponen canCreate={payload && payload.biz} />
       </Grid>
     </Box>
   );

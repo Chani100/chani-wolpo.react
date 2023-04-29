@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -20,33 +19,60 @@ import ROUTES from "../routes/ROUTES";
 import axios from "axios";
 import { toast } from "react-toastify";
 import CachedIcon from "@mui/icons-material/Cached";
-
+import useLoggedIn from "../hooks/useLoggedIn";
 
 const LoginPage = () => {
   const [inputState, setInputState] = useState({
     email: "",
     password: "",
   });
-  const [inputsErrorState, setinputsErrorState] = useState(null);
-  const navigate = useNavigate();
-  const handeleBtnClick = async (ev) => {
+   useEffect(() => {
     const joiResponse = validateLoginSchema(inputState);
+    setInputsErrorsState(joiResponse);
+  }, []);
+  const [inputsErrorState, setInputsErrorsState] = useState(null);
+  const loggedIn = useLoggedIn();
+  const navigate = useNavigate();
+  const joiResponse = validateLoginSchema(inputState);
+  const handeleBtnClick = async (ev) => {
     try {
-      setinputsErrorState(joiResponse);
+      setInputsErrorsState(joiResponse);
       if (joiResponse) {
         toast.error("Invalid user information");
         return;
       }
-      const { data} = await axios.post("/users/login", inputState);
+      const { data } = await axios.post("/users/login", inputState);
       localStorage.setItem("token", data.token);
-
+      loggedIn();
       navigate(ROUTES.HOME);
-    } catch (err) {  toast.error("Unregistered user");}
+    } catch (err) {
+      toast.error("Unregistered user");
+    }
   };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
+    const joiResponse = validateLoginSchema(inputState);
+    setInputsErrorsState(joiResponse);
+  };
+  const shabmit = () => {
+    let newInputState = JSON.parse(JSON.stringify(inputState));
+    newInputState = {
+     
+      email: "",
+      password:"",
+    };
+    setInputState(newInputState);
+    const joiResponse = validateLoginSchema(inputState);
+    if (!joiResponse) {
+      return;
+    }
+    let newjoiResponse = JSON.parse(JSON.stringify(joiResponse));
+    Object.keys(newjoiResponse).forEach((index) => {
+      newjoiResponse[index] = "";
+      inputsErrorState(newjoiResponse);
+    });
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -127,14 +153,17 @@ const LoginPage = () => {
               ></Button>
             </Grid>
           </Grid>
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handeleBtnClick}
-          >
-            Login
-          </Button>
+          <Grid item xs={12}>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={inputsErrorState !== null}
+              onClick={handeleBtnClick}
+            >
+              Login
+            </Button>
+          </Grid>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to={ROUTES.REGISTER}>

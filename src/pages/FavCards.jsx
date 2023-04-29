@@ -5,8 +5,6 @@ import jwt_decode from "jwt-decode";
 import { Box, CircularProgress, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 
-
-
 import CardComponent from "../components/CardComponent";
 
 import { toast } from "react-toastify";
@@ -28,7 +26,7 @@ const Favcards = () => {
 
         setCardsArr(
           dataArr.filter((card) =>
-            card[1]["likes"].includes(jwt_decode (localStorage.token)._id)
+            card[1]["likes"].includes(jwt_decode(localStorage.token)._id)
           )
         );
       })
@@ -44,8 +42,7 @@ const Favcards = () => {
 
   const filterFunc = (data) => {
     if (!originalCardsArr && !data) {
-      
-      return; 
+      return;
     }
     let filter = "";
     if (qparams.filter) {
@@ -55,7 +52,6 @@ const Favcards = () => {
       setOriginalCardsArr(data);
       setCardsArr(data.filter((card) => card.title.startsWith(filter)));
       return;
-       
     }
     if (originalCardsArr) {
       let newOriginalCardsArr = JSON.parse(JSON.stringify(originalCardsArr));
@@ -67,23 +63,29 @@ const Favcards = () => {
   useEffect(() => {
     filterFunc();
   }, [qparams.filter]);
-  const handleDeleteFromInitialCardsArr = async (id) => {
+  const handlDeleteFromInitialCardArr = async (id) => {
     try {
-      await axios.delete("/cards/" + id); // /cards/:id
-      setCardsArr((newCardsArr) =>
-        newCardsArr.filter((item) => item._id != id)
+      await axios.delete("/cards/" + id);
+      setCardsArr((currentCardsArr) =>
+        currentCardsArr.filter((item) => item._id != id)
       );
+
+      toast.success("The image has been successfully deleted");
     } catch (err) {}
   };
-  const handleEditFromInitialCardsArr = (id) => {
-    navigate(`/edit/${id}`); //localhost:3000/edit/123213
+
+  const handlEditFromInitialCardArr = (id) => {
+    navigate(`/edit/${id}`);
   };
 
   if (!cardsArr) {
-    
-     
-     return <CircularProgress /> ;
-      
+    return <CircularProgress />;
+  }
+
+  if (cardsArr == 0) {
+    toast.error(
+      "You still haven't made a like to any card, Feel free to choose the tickets you like."
+    );
   }
 
   return (
@@ -92,7 +94,7 @@ const Favcards = () => {
       <h3>Here you can fav</h3>
       <Grid container spacing={2}>
         {cardsArr.map((item) => (
-          <Grid item xs={4} key={item[1]._id + Date.now()}>
+          <Grid item sm={4} md={4} xs={12} key={item[1]._id + Date.now()}>
             <CardComponent
               id={item[1]._id}
               phone={item[1].phone}
@@ -104,6 +106,8 @@ const Favcards = () => {
               subTitle={item[1].subTitle}
               description={item[1].description}
               img={item[1].image ? item[1].image.url : ""}
+              onDelete={handlDeleteFromInitialCardArr}
+              onEdit={handlEditFromInitialCardArr}
               onDeletefav={delete1}
               canEdit={
                 payload &&
