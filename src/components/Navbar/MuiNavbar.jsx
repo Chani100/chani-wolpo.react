@@ -35,7 +35,8 @@ const pages = [
     url: ROUTES.ABOUT,
   },
 ];
-const notAuthPages = [
+
+  const notAuthPages = [
   {
     label: "Register",
     url: ROUTES.REGISTER,
