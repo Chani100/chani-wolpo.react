@@ -18,11 +18,12 @@ const MyCards = () => {
   const navigate = useNavigate();
   let qparams = useQueryParams();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
-
+ 
   useEffect(() => {
     axios
       .get("/cards/my-cards/")
       .then(({ data }) => {
+        /*   filterFunc(data); */
         let dataArr = Object.entries(data);
 
         setCardsArr(
@@ -41,6 +42,7 @@ const MyCards = () => {
   }, []);
 
   const filterFunc = (data) => {
+    
     if (!originalCardsArr && !data) {
       return;
     }
@@ -50,13 +52,22 @@ const MyCards = () => {
     }
     if (!originalCardsArr && data) {
       setOriginalCardsArr(data);
-      setCardsArr(data.filter((card) => card.title.startsWith(filter)));
+      setCardsArr(
+        data.filter(
+          (card) =>
+            card.title.startsWith(filter) || card.bizNumber.startsWith(filter)
+        )
+      );
       return;
     }
+
     if (originalCardsArr) {
-      let newOriginalCardsArr = JSON.parse(JSON.stringify(originalCardsArr));
+      let neworiginalCardsArr = JSON.parse(JSON.stringify(originalCardsArr));
       setCardsArr(
-        newOriginalCardsArr.filter((card) => card.title.startsWith(filter))
+        neworiginalCardsArr.filter(
+          (card) =>
+            card.title.startsWith(filter) || card.bizNumber.startsWith(filter)
+        )
       );
     }
   };
@@ -64,9 +75,7 @@ const MyCards = () => {
     filterFunc();
   }, [qparams.filter]);
 
-  if (!cardsArr) {
-    return <CircularProgress />;
-  }
+ 
   const handlDeleteFromInitialCardArr = async (id) => {
     try {
       await axios.delete("/cards/" + id);
@@ -86,7 +95,9 @@ const MyCards = () => {
       "You haven't created tickets yet,Feel free to create a card and post it."
     );
   }
-
+if (!cardsArr) {
+  return <CircularProgress />;
+}
   return (
     <Box>
       <h1>My Cards</h1>
@@ -108,14 +119,17 @@ const MyCards = () => {
               subTitle={item[1].subTitle}
               description={item[1].description}
               img={item[1].image ? item[1].image.url : ""}
-              /* onDelete={handlDeleteFromInitialCardArr}
-              onEdit={handlEditFromInitialCardArr} */
+             
               onDelete={handlDeleteFromInitialCardArr}
               onEdit={handlEditFromInitialCardArr}
               canEdit={
                 payload &&
                 (payload.isAdmin || payload.biz) &&
                 item[1].user_id == jwt_decode(localStorage.token)._id
+              } 
+              isFav={
+                localStorage.token &&
+                item[1].likes.includes(jwt_decode(localStorage.token)._id)
               }
               canDelete={
                 (payload && payload.isAdmin) ||

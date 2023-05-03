@@ -48,7 +48,7 @@ const notAuthPages = [
 const favcard = [{ label: "Fav Cards", url: ROUTES.FAVCARDS }];
 const isBiz = [
   {
-    label: "Me cards",
+    label: "My cards",
     url: ROUTES.MYCARDS,
   },
 ];

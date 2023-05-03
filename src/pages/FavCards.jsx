@@ -19,16 +19,20 @@ const Favcards = () => {
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
 
   useEffect(() => {
+     
     axios
       .get("/cards/cards")
       .then(({ data }) => {
+       
         let dataArr = Object.entries(data);
 
         setCardsArr(
           dataArr.filter((card) =>
-            card[1]["likes"].includes(jwt_decode(localStorage.token)._id)
+            card[1]["likes"].includes(jwt_decode(localStorage.token)._id) 
+          
           )
-        );
+        );  
+        
       })
 
       .catch((err) => {
@@ -36,7 +40,7 @@ const Favcards = () => {
       });
   }, []);
 
-  const delete1 = (id) => {
+  const deleteFav = (id) => {
     setCardsArr(cardsArr.filter((card) => card[1]._id !== id));
   };
 
@@ -108,7 +112,7 @@ const Favcards = () => {
               img={item[1].image ? item[1].image.url : ""}
               onDelete={handlDeleteFromInitialCardArr}
               onEdit={handlEditFromInitialCardArr}
-              onDeletefav={delete1}
+              onDeletefav={deleteFav}
               canEdit={
                 payload &&
                 (payload.isAdmin || payload.biz) &&
@@ -118,6 +122,10 @@ const Favcards = () => {
                 (payload && payload.isAdmin) ||
                 (payload.biz &&
                   item[1].user_id == jwt_decode(localStorage.token)._id)
+              }
+              isFav={
+                localStorage.token &&
+                item[1].likes.includes(jwt_decode(localStorage.token)._id)
               }
             />
           </Grid>

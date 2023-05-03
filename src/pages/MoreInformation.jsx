@@ -7,13 +7,13 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate, useParams } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
-import { CircularProgress, IconButton, BottomNavigation } from "@mui/material";
+import { CircularProgress, IconButton, BottomNavigation, Avatar } from "@mui/material";
 import axios from "axios";
 import atom from "../logo.svg";
-
+import SpeakerNotesIcon from "@mui/icons-material/SpeakerNotes";
 import MoreComponent from "../components/MoreComponent";
 const MoreInf = () => {
- /*  const [cardsArr, setCardsArr] = useState(null); */
+  /*  const [cardsArr, setCardsArr] = useState(null); */
   const { id } = useParams();
   const [inputState, setInputState] = useState(null);
   const navigate = useNavigate();
@@ -33,7 +33,6 @@ const MoreInf = () => {
       } else {
         newInputState.alt = "";
       }
-   
 
       delete newInputState.image;
       delete newInputState.likes;
@@ -42,7 +41,6 @@ const MoreInf = () => {
       delete newInputState.address;
       delete newInputState.__v;
       setInputState(newInputState);
-      
     })();
   }, [id]);
 
@@ -52,7 +50,7 @@ const MoreInf = () => {
   if (!inputState) {
     return <CircularProgress color="secondary" />;
   }
-let cardsArrIn = Object.keys(inputState);
+  let cardsArrIn = Object.keys(inputState);
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -64,114 +62,32 @@ let cardsArrIn = Object.keys(inputState);
           alignItems: "center",
         }}
       >
+         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <SpeakerNotesIcon/>
+        </Avatar>
         <Typography variant="h5">More details</Typography>
         <Box
           component="img"
           sx={{
-            height: 233,
-            width: 350,
-            maxHeight: { xs: 233, md: 167 },
-            maxWidth: { xs: 350, md: 250 },
+            height: 180,
+            width: 250,
+            maxHeight: { xs: 180, md: 167 },
+            maxWidth: { xs: 250, md: 250 },
           }}
           alt={inputState.alt ? inputState.alt : ""}
           src={inputState.url ? inputState.url : atom}
         />
         <Grid container spacing={2}>
-        <Grid item xs={12}>
-          {cardsArrIn.map((item) => (
-            <MoreComponent
-              inputState={inputState}
-              key={item + Date.now()}
-              item={item}
-            />
-          ))}
+          <Grid item xs={12}>
+            {cardsArrIn.map((item) => (
+              <MoreComponent
+                inputState={inputState}
+                key={item + Date.now()}
+                item={item}
+              />
+            ))}
+          </Grid>
         </Grid>
-</Grid>
-        {/*   <Grid item xs={12}>
-           <Typography variant="h6">
-                Url:
-                {inputState.url ? inputState.url : " "}
-              </Typography>
-            </Grid> */}
-        {/* <Grid item xs={12}>
-              <Typography>
-                <h4>Title:</h4>
-                {inputState.title}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4>SubTitle: </h4>
-                {inputState.subTitle}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4> Description:</h4>
-                {inputState.description}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4>Phone:</h4>
-                {inputState.phone}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4>Stata:</h4>
-                {inputState.state}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4> Country:</h4>
-                {inputState.country}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4>City:</h4>
-                {inputState.city}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4>Street:</h4>
-                {inputState.street}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4>House Number:</h4>
-
-                {inputState.houseNumber}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4>Zip Code:</h4>
-
-                {inputState.zipCode}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4>Email:</h4>
-                {inputState.email}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4>Web:</h4>
-                {inputState.web}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography>
-                <h4>Create dAt: </h4>
-                {inputState.createdAt}
-              </Typography> */}
         <Grid container justifyContent="flex-end">
           <Button
             variant="contained"

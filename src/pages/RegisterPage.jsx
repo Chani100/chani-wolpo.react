@@ -34,10 +34,7 @@ const RegisterPage = () => {
      zipCode: "",
      biz: false,
    });
-    useEffect(() => {
-      const joiResponse = validateRegisterSchema(inputState);
-      setinputsErrorState(joiResponse);
-    }, []);
+  
    let joiResponse = validateRegisterSchema(inputState);
  const [inputsErrorState, setinputsErrorState] = useState(null);
    const navigate = useNavigate();
@@ -46,6 +43,9 @@ const RegisterPage = () => {
        joiResponse = validateRegisterSchema(inputState);
  if (joiResponse) {
          return;
+       }
+       if (inputState.zipCode == "") {
+         inputState.zipCode = null;
        }
        await axios.post("/users/register", {
          firstName: inputState.firstName,
@@ -61,7 +61,7 @@ const RegisterPage = () => {
          city: inputState.city,
          street: inputState.street,
          houseNumber: inputState.houseNumber,
-         zipCode: inputState.zipCode,
+         zipCode:inputState.zipCode,
          biz: inputState.biz,
        });
        navigate(ROUTES.LOGIN);
@@ -81,6 +81,9 @@ const RegisterPage = () => {
      let newInputState = JSON.parse(JSON.stringify(inputState));
      newInputState["biz"] = ev.target.checked;
      setInputState(newInputState);
+   };
+   const cancel = () => {
+     navigate(ROUTES.HOME);
    };
    const shabmit = () => {
      let newInputState = JSON.parse(JSON.stringify(inputState));
@@ -106,12 +109,14 @@ joiResponse = validateRegisterSchema(inputState);
      if (!joiResponse) {
        return;
      }
+  
  let newjoiResponse = JSON.parse(JSON.stringify(joiResponse));
      Object.keys(newjoiResponse).forEach((index) => {
        newjoiResponse[index] = "";
      });
      setinputsErrorState(newjoiResponse);
    };
+  
  const keys = Object.keys(inputState);
   return (
     <Container component="main" maxWidth="xs">
@@ -134,6 +139,8 @@ joiResponse = validateRegisterSchema(inputState);
           <Grid container spacing={2}>
             {keys.map((item) => (
               <RegisterComponent
+                fullWidth={item}
+                label={item}
                 key={item}
                 item={item}
                 inputState={inputState}
@@ -141,7 +148,7 @@ joiResponse = validateRegisterSchema(inputState);
                 inputsErrorState={inputsErrorState}
               />
             ))}
-<Grid item xs={12}>
+            <Grid item xs={12}>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -160,7 +167,7 @@ joiResponse = validateRegisterSchema(inputState);
                 fullWidth
                 sx={{ mt: 1, mb: 1 }}
                 color="primary"
-                href={ROUTES.HOME}
+                onClick={cancel}
               >
                 CANCEL
               </Button>

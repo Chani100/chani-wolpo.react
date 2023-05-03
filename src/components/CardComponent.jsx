@@ -9,8 +9,7 @@ import {
   Button,
   IconButton,
   Box,
-  responsiveFontSizes,
-  Grid,
+ 
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -18,10 +17,10 @@ import PropTypes from "prop-types";
 import CreateIcon from "@mui/icons-material/Create";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PhoneIcon from "@mui/icons-material/Phone";
-import { Fragment,  } from "react";
+import { Fragment, useState } from "react";
 
 import axios from "axios";
-
+import { useSelector } from "react-redux";
 
 const CardComponent = ({
   id,
@@ -35,30 +34,32 @@ const CardComponent = ({
   onEdit,
   canEdit,
   canDelete,
-  canlogin,
   onDeletefav,
   moreIn,
+  isFav,
 }) => {
- 
-
+   const isLoggedIn = useSelector(
+    (bigPieBigState) => bigPieBigState.authSlice.isLoggedIn
+  );
+  const [favState, setfavState] = useState(isFav);
   const handleBtnDeleteClick = () => {
     onDelete(id);
   };
   const handleBtnEditClick = () => {
     onEdit(id);
   };
- 
+
   const handlMoreInfor = () => {
     moreIn(id);
   };
-
 
   const handleFavBtnClick = async () => {
     try {
       await axios.patch("/cards/card-like/" + id);
       onDeletefav(id);
+      setfavState(!favState);
     } catch (err) {
-      console.log("error when change fav", err.response.data);
+   
     }
   };
   return (
@@ -66,6 +67,7 @@ const CardComponent = ({
       <CardActionArea>
         <CardMedia
           component="img"
+         
           image={img}
           className="imgcard"
           onClick={handlMoreInfor}
@@ -77,6 +79,7 @@ const CardComponent = ({
         <Typography>{`Address: ${address}`}</Typography>
         <Typography>{`Card Number: ${cardNumber}`}</Typography>
       </CardContent>
+
       <CardActions>
         <Box sx={{ display: "flex", flex: 1, justifyContent: "flex-start" }}>
           {canDelete ? (
@@ -106,16 +109,27 @@ const CardComponent = ({
             ""
           )}
         </Box>
-        <Box sx={{ display: "flex", flex: 1, justifyContent: "flex-end" }}>
-          <Button variant="text" color="primary" onClick={handleFavBtnClick}>
-            <FavoriteIcon />
-          </Button>
-
-          <IconButton color="error" aria-label="add an alarm">
+        <Box
+          sx={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "flex-end",
+          }}
+        >
+          {isLoggedIn ? (
+            <Button color="primary" onClick={handleFavBtnClick}>
+              <FavoriteIcon
+                className="fav"
+                sx={favState ? { color: "red" } : { color: "primary" }}
+              />
+            </Button>
+          ) : (
+            ""
+          )}
+          <IconButton aria-label="add an alarm" sx={{ color: "red" }}>
             <PhoneIcon />
           </IconButton>
         </Box>
-        {/* <Favicon isLoggedIn={isLoggedIn} />  */}
       </CardActions>
     </Card>
   );
@@ -133,7 +147,7 @@ CardComponent.propTypes = {
   onEdit: PropTypes.func,
 };
 CardComponent.defaultProps = {
-  img: "https://www.photo-art.co.il/wp-content/uploads/2017/09/IMG_9006.jpg",
+  img: "http://www.2all.co.il/web/Sites/tutyfrutyyy/65882_(6).jpg",
   subTitle: 0,
 };
 export default CardComponent;

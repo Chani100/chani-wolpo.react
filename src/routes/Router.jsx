@@ -38,7 +38,7 @@ let Router = () => {
       <Route path={ROUTES.SANDBOX} element={<Sandbox />} />
       <Route path={ROUTES.CREATE} element={<CreateCard />} />
       <Route path={ROUTES.FAVCARDS} element={<FavCards />} />
-      <Route path={ROUTES.PROFILE} element={<ProfilePage/>} />
+      <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
 
       <Route
         path="/edit/:id"
@@ -61,7 +61,27 @@ let Router = () => {
           />
         }
       />
-      <Route path="/moreInformation/:id" element={<MoreInformation />} />
+
+      <Route
+        path="/sandbox"
+        element={
+          <SuperProtectedRoute
+            isAdmin={false}
+            isBiz={false}
+            element={<Sandbox />}
+          />
+        }
+      />
+
+      <Route
+        path="/moreInformation/:id"
+        element={
+          <ProtectedRoute
+            isLoggedIn={true}
+            element={<MoreInformation />}
+          />
+        }
+      />
 
       <Route path="/sandBox" element={<SandBox />}>
         <Route path="nestedpage1" element={<NestedPage1 />} />
@@ -69,8 +89,7 @@ let Router = () => {
 
         <Route path="rp1" element={<RP1 />} />
 
-       
-        <Route path="FirstComponent" element={<FirstComponent/>}/>
+        <Route path="FirstComponent" element={<FirstComponent />} />
       </Route>
 
       <Route

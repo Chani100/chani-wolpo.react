@@ -5,8 +5,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import NavLinkComponent from "./NavLinkComponents";
 import { authActions } from "../../store/auth";
+import axios from "axios";
 
-const avatar = [
+const avatarArr = [
   {
     label: "Logout",
     url: ROUTES.LOGOUT,
@@ -17,13 +18,25 @@ const avatar = [
   },
 ];
 
-
 const AvatarM = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [avatar, setAvatar] = React.useState();
   const dispatch = useDispatch();
+
   const isLoggedIn = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.isLoggedIn
   );
+
+  React.useEffect(() => {
+    axios
+      .get("/users/userInfo")
+      .then((userInfo) => {
+        setAvatar({
+          url: userInfo.data.imageUrl,
+        });
+      })
+      .catch((err) => {});
+  }, [isLoggedIn]);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -43,8 +56,7 @@ const AvatarM = () => {
           size="large"
           onClick={handleOpenNavMenu}
           color="inherit"
-          alt="Travis Howard"
-          src="http://www.2all.co.il/web/Sites/tutyfrutyyy/65882_(6).jpg"
+          src={avatar.url}
         ></Avatar>
       ) : (
         ""
@@ -66,7 +78,7 @@ const AvatarM = () => {
       >
         <Box>
           {isLoggedIn
-            ? avatar.map((page) =>
+            ? avatarArr.map((page) =>
                 page.url === ROUTES.LOGOUT ? (
                   <NavLinkComponent
                     key={page.url}
@@ -78,7 +90,7 @@ const AvatarM = () => {
                 )
               )
             : ""}
-          {avatar.map((page) => (
+          {avatarArr.map((page) => (
             <MenuItem key={"miniLinks" + page.url} onClick={handleCloseNavMenu}>
               <NavLink to={page.url}></NavLink>
             </MenuItem>

@@ -26,7 +26,7 @@ const CreateCardPage = () => {
     description: "",
     phone: "",
     email: "",
-    /*  wed:"", */
+    web: "",
     state: "",
     country: "",
     city: "",
@@ -77,7 +77,7 @@ const CreateCardPage = () => {
       description: "",
       phone: "",
       email: "",
-      /*  wed:"", */
+      web: "",
       state: "",
       country: "",
       city: "",
@@ -96,8 +96,8 @@ const CreateCardPage = () => {
       inputsErrorState(newjoiResponse);
     });
   };
- 
-   const keys = Object.keys(inputState);
+
+  const keys = Object.keys(inputState);
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -108,16 +108,15 @@ const CreateCardPage = () => {
           alignItems: "center",
         }}
       >
-        
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <EditIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Create card
-          </Typography>
-          <Box component="div" noValidate sx={{ mt: 3 }}>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <EditIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Create card
+        </Typography>
+        <Box component="div" noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-  {/* component="img"
+            {/* component="img"
             sx={{
               height: 233,
               width: 350,
@@ -126,51 +125,51 @@ const CreateCardPage = () => {
             }}
             alt={inputState.alt ? inputState.alt : ""}
             src={inputState.url ? inputState.url : atom}
-          /> */} 
+          /> */}
 
-          {keys.map((item) => (
-            <CreatCard
-              key={item}
-              item={item}
-              inputState={inputState}
-              onChange={handleInputChange}
-              inputsErrorState={inputsErrorState}
-            />
-          ))}
+            {keys.map((item) => (
+              <CreatCard
+                key={item}
+                item={item}
+                inputState={inputState}
+                onChange={handleInputChange}
+                inputsErrorState={inputsErrorState}
+              />
+            ))}
 
-          <Grid item xs={12} /* sm={6} */>
-            <Button
-              size="large"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 1, mb: 1 }}
-              onClick={shabmit}
-              endIcon={<CachedIcon />}
-            ></Button>
+            <Grid item xs={12} /* sm={6} */>
+              <Button
+                size="large"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 1 }}
+                onClick={shabmit}
+                endIcon={<CachedIcon />}
+              ></Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 1 }}
+                onClick={handleCancelBtnClick}
+              >
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ mt: 1, mb: 1 }}
+                disabled={inputsErrorState !== null}
+                onClick={handleSaveBtnClick}
+              >
+                Sign Up
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 1, mb: 1 }}
-              onClick={handleCancelBtnClick}
-            >
-              Cancel
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 1, mb: 1 }}
-              disabled={inputsErrorState !== null}
-              onClick={handleSaveBtnClick}
-            >
-              Sign Up
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
+        </Box>
       </Box>
     </Container>
   );

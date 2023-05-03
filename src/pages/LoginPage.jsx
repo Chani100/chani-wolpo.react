@@ -26,10 +26,7 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
-   useEffect(() => {
-    const joiResponse = validateLoginSchema(inputState);
-    setInputsErrorsState(joiResponse);
-  }, []);
+
   const [inputsErrorState, setInputsErrorsState] = useState(null);
   const loggedIn = useLoggedIn();
   const navigate = useNavigate();

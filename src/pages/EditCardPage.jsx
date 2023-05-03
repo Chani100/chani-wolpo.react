@@ -89,7 +89,9 @@ const EditCardPage = () => {
   if (!inputState) {
     return <CircularProgress color="secondary" />;
   }
- 
+  const cancel = () => {
+    navigate(ROUTES.HOME);
+  };
  const keys = Object.keys(inputState); 
   return (
     <Container component="main" maxWidth="xs">
@@ -131,33 +133,31 @@ const EditCardPage = () => {
                 inputsErrorState={inputsErrorState}
               />
             ))}
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 1 }}
-                /*   {...(!joiResponse ? { disabled: false } : { disabled: true })} */
-                onClick={handeleBtnClick}
-              >
-                save
-              </Button>{" "}
-            
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 1 }}
-                href={ROUTES.HOME}
-              >
-                cancelation
-              </Button>
-            </Grid>
-            <Grid container justifyContent="flex-end">
-              {/* <Grid item></Grid> */}
-            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 1 }}
+               /*  {...(!joiResponse ? { disabled: false } : { disabled: true })}  */
+              onClick={handeleBtnClick}
+            >
+              save
+            </Button>{" "}
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 1 }}
+              onClick={cancel}
+            >
+              cancel
+            </Button>
+          </Grid>
+          <Grid container justifyContent="flex-end">
           
+          </Grid>
         </Box>
       </Box>
     </Container>

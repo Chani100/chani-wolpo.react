@@ -26,6 +26,7 @@ const RegisterComponent = ({
         required
         fullWidth
         id={item}
+        label={item}
         name={item}
         type={item}
         value={inputState[item] ? inputState[item] : ""}
