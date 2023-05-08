@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import ROUTES from "../../routes/ROUTES";
-import { Avatar, Box, Menu, MenuItem } from "@mui/material";
+import { Avatar, Box, IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import NavLinkComponent from "./NavLinkComponents";
@@ -52,12 +52,17 @@ const AvatarM = () => {
   return (
     <Box>
       {isLoggedIn ? (
-        <Avatar
+        <IconButton
           size="large"
+          edge="end"
+          aria-label="account of current user"
+          aria-controls={"account-menu"}
+          aria-haspopup="true"
           onClick={handleOpenNavMenu}
           color="inherit"
-          src={avatar.url}
-        ></Avatar>
+        >
+          {avatar && <Avatar alt={avatar.alt} src={avatar.url} />}
+        </IconButton>
       ) : (
         ""
       )}
@@ -86,15 +91,15 @@ const AvatarM = () => {
                     onClick={logoutClick}
                   />
                 ) : (
-                  <NavLinkComponent key={page.url} {...page} />
+                  <NavLinkComponent
+                    onClick={handleCloseNavMenu}
+                     key={page.url}
+                    {...page}
+                  />
                 )
               )
             : ""}
-          {avatarArr.map((page) => (
-            <MenuItem key={"miniLinks" + page.url} onClick={handleCloseNavMenu}>
-              <NavLink to={page.url}></NavLink>
-            </MenuItem>
-          ))}
+        
         </Box>
       </Menu>
     </Box>

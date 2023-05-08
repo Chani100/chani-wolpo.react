@@ -1,9 +1,9 @@
-/* import { useState } from "react";
+import * as React from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import ROUTES from "../../routes/ROUTES";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -48,23 +48,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchPartial = () => {
-  const location = useLocation
-  const [searchState, setSearchState] = useState("");
+  let location = useLocation();
   const navigate = useNavigate();
-  const searchChange = (e) =>{
-  const value = e.target.value 
- 
-    setSearchState(value);
-    searchSubmit(value);
+  const [searchState, setSearchState] = useState("");
+  const [changed, setChanged] = useState(false);
+const searchChange = (e) => {
+  setSearchState(e.target.value);
+};
+const searchSubmit = (e) => {
+      e.preventDefault(); 
+    let url = location.pathname;
+    if (searchState) {
+      navigate(`${url}?filter=${searchState}`);
+      setChanged(true);
+    } else {
+      if (changed) {
+        navigate(-1);
+        setChanged(false);
+      }
+    }
   };
-  const searchSubmit = (value) => {
-    const pathname = location.pathname;
-   
-    navigate(`${pathname}?filter=${value}`);
-    };
+
   return (
-   /*  <form onSubmit={searchSubmit}> */
-   /*    <Search>
+ <form  onSubmit={searchSubmit} > 
+      <Search>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
@@ -74,12 +81,12 @@ const SearchPartial = () => {
           onChange={searchChange}
           value={searchState}
         />
-      </Search> */
-    /* </form> */
- /*  );
-};
-export default SearchPartial; */
-import * as React from "react";
+      </Search>
+  </form>
+  );
+ }; 
+export default SearchPartial;
+/* import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
@@ -131,18 +138,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const SearchPartial = () => {
   const location = useLocation();
   const [searchInput, setSearchInput] = useState("");
+  
   const navigate = useNavigate();
   const searchFunc = (ev) => {
     const value = ev.target.value;
     setSearchInput(value);
-    searchSubmit(value);
-    /*  searchSubmit();
-    setSearchState(ev.target.value); */
-  };
-  const searchSubmit = (value) => {
+ /*    searchSubmit(value);  */
+
+/* setSearchState(ev.target.value); */
+/*  }; */
+/* const searchSubmit = (ev) => {
+    ev.preventDefault();
     const pathname = location.pathname;
-    console.log(pathname);
-    navigate(`${pathname}?filter=${value}`);
+    console.log(location);
+    navigate(`${pathname}?filter=${searchInput}`);
   };
   return (
     <form onSubmit={searchSubmit}>
@@ -159,5 +168,8 @@ const SearchPartial = () => {
       </Search>
     </form>
   );
-};
-export default SearchPartial;
+}; 
+
+
+
+export default SearchPartial; */

@@ -76,9 +76,10 @@ const EditCardPage = () => {
       if (!joiResponse) {
         await axios.put("/cards/" + id, inputState);
         navigate(ROUTES.HOME);
+         toast.success("The change was successfully saved");
       }
     } catch (err) {
-      toast.error("errrrrrrrrrrror");
+    
     }
   };
   const handleChange = (ev) => {
@@ -107,7 +108,7 @@ const EditCardPage = () => {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <CreateIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography  variant="h3">
           Edit Card
         </Typography>
         <Box

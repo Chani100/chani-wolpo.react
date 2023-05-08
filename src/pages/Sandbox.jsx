@@ -19,11 +19,11 @@ const SandBox = () => {
             <Link to="/sandBox/nestedpage2">nested page 2</Link>
           </Grid>
           <Grid item xs={2} sm={2} md={2}>
-            <Link to="/sandBox/RP1">RP1</Link>
+            <Link to="/sandBox/RRPButtonParcial">RRPButtonParcial</Link>
           </Grid>
-          
+
           <Grid item xs={2} sm={2} md={2}>
-            <Link to="/sandBox/FirstComponent">FirstComponent</Link>
+            <Link to="/sandBox/RRPH3Parcial">RRPH3Parcial</Link>
           </Grid>
         </Grid>
         <Outlet />

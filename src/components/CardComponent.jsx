@@ -9,7 +9,6 @@ import {
   Button,
   IconButton,
   Box,
- 
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -38,7 +37,7 @@ const CardComponent = ({
   moreIn,
   isFav,
 }) => {
-   const isLoggedIn = useSelector(
+  const isLoggedIn = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.isLoggedIn
   );
   const [favState, setfavState] = useState(isFav);
@@ -58,16 +57,13 @@ const CardComponent = ({
       await axios.patch("/cards/card-like/" + id);
       onDeletefav(id);
       setfavState(!favState);
-    } catch (err) {
-   
-    }
+    } catch (err) {}
   };
   return (
     <Card /* square raised */ className="cardStely">
       <CardActionArea>
         <CardMedia
           component="img"
-         
           image={img}
           className="imgcard"
           onClick={handlMoreInfor}
@@ -81,7 +77,14 @@ const CardComponent = ({
       </CardContent>
 
       <CardActions>
-        <Box sx={{ display: "flex", flex: 1, justifyContent: "flex-start" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "flex-start",
+           
+          }}
+        >
           {canDelete ? (
             <Fragment>
               <IconButton
@@ -114,6 +117,7 @@ const CardComponent = ({
             display: "flex",
             flex: 1,
             justifyContent: "flex-end",
+            bottom: 1,
           }}
         >
           {isLoggedIn ? (

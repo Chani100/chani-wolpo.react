@@ -70,7 +70,8 @@ const HomePage = () => {
   };
 
   const handlEditFromInitialCardArr = (id) => {
-    navigate(`/edit/${id}`);
+    const cardId=cardsArr.find((card)=>card._id==id)
+    navigate(`/edit/${id}`,{state:{user_id:cardId.user_id}});
   };
   const handlMoreInfo = (id) => {
     navigate(`/moreInformation/${id}`);

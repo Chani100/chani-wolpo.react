@@ -8,7 +8,6 @@ import ROUTES from "./ROUTES";
 import { Typography } from "@mui/material";
 import MyCards from "../pages/Mycards";
 import LogoutPags from "../pages/LogoutPags";
-import Sandbox from "../pages/Sandbox";
 import CreateCard from "../pages/CreateCardPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import SuperProtectedRoute from "../components/SoperProtectedRoute";
@@ -18,9 +17,12 @@ import SandBox from "../pages/Sandbox";
 import NestedPage1 from "../pages/NestedRoutePage/NestedPage1";
 import NestedPage2 from "../pages/NestedRoutePage/NestedPage2";
 import RP1 from "../pages/RP1";
-
-import FirstComponent from "../components/FirstComponent"
+import ProtectedEditRoute from "../components/ProtectedEditRoute";
 import ProfilePage from "../pages/ProfilePage";
+import RP2 from "../pages/RP2";
+import RRPButtonParcial from "../pages/ReRenderPage/RRPButtonParcial";
+import RRPH3Parcial from "../pages/ReRenderPage/RRPH3Parcial";
+import CreateCardPage from "../pages/CreateCardPage";
 let Router = () => {
   return (
     <Routes>
@@ -35,15 +37,14 @@ let Router = () => {
         element={<ProtectedRoute element={<LogoutPags />} />}
       />
       <Route path={ROUTES.MYCARDS} element={<MyCards />} />
-      <Route path={ROUTES.SANDBOX} element={<Sandbox />} />
-      <Route path={ROUTES.CREATE} element={<CreateCard />} />
+
       <Route path={ROUTES.FAVCARDS} element={<FavCards />} />
       <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
 
       <Route
         path="/edit/:id"
         element={
-          <SuperProtectedRoute
+          <ProtectedEditRoute
             isAdmin={true}
             isBiz={true}
             element={<EditCardPage />}
@@ -52,23 +53,12 @@ let Router = () => {
       />
 
       <Route
-        path="/createcard"
+        path="/create"
         element={
           <SuperProtectedRoute
             isAdmin={false}
             isBiz={true}
-            element={<CreateCard />}
-          />
-        }
-      />
-
-      <Route
-        path="/sandbox"
-        element={
-          <SuperProtectedRoute
-            isAdmin={false}
-            isBiz={false}
-            element={<Sandbox />}
+            element={<CreateCardPage />}
           />
         }
       />
@@ -76,20 +66,23 @@ let Router = () => {
       <Route
         path="/moreInformation/:id"
         element={
-          <ProtectedRoute
-            isLoggedIn={true}
-            element={<MoreInformation />}
-          />
+          <ProtectedRoute isLoggedIn={true} element={<MoreInformation />} />
         }
       />
-
-      <Route path="/sandBox" element={<SandBox />}>
+      <Route
+        path="/sandbox"
+        element={
+          <SuperProtectedRoute
+            isAdmin={true}
+            isBiz={false}
+            element={<SandBox />}
+          />
+        }
+      >
         <Route path="nestedpage1" element={<NestedPage1 />} />
         <Route path="nestedpage2" element={<NestedPage2 />} />
-
-        <Route path="rp1" element={<RP1 />} />
-
-        <Route path="FirstComponent" element={<FirstComponent />} />
+        <Route path="RRPButtonParcial" element={<RRPButtonParcial />} />
+        <Route path="RRPH3Parcial" element={<RRPH3Parcial />} />
       </Route>
 
       <Route

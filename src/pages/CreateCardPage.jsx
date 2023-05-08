@@ -53,8 +53,8 @@ const CreateCardPage = () => {
       toast.success("The card was successfully added!");
       navigate(ROUTES.HOME);
     } catch (err) {
-      console.log("err", err);
-      toast.error("errrrrrrrrrrrrrrrror");
+    
+    
     }
   };
   const handleCancelBtnClick = (ev) => {
@@ -111,22 +111,12 @@ const CreateCardPage = () => {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <EditIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography variant="h3">
           Create card
         </Typography>
         <Box component="div" noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            {/* component="img"
-            sx={{
-              height: 233,
-              width: 350,
-              maxHeight: { xs: 233, md: 167 },
-              maxWidth: { xs: 350, md: 250 },
-            }}
-            alt={inputState.alt ? inputState.alt : ""}
-            src={inputState.url ? inputState.url : atom}
-          /> */}
-
+           
             {keys.map((item) => (
               <CreatCard
                 key={item}
@@ -137,7 +127,7 @@ const CreateCardPage = () => {
               />
             ))}
 
-            <Grid item xs={12} /* sm={6} */>
+            <Grid item xs={12} >
               <Button
                 size="large"
                 fullWidth

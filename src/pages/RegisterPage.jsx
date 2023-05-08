@@ -66,7 +66,7 @@ const RegisterPage = () => {
        });
        navigate(ROUTES.LOGIN);
      } catch (err) {
-       console.log("error from axios", err.response.data);
+      
        toast.error("registered user");
      }
    };
@@ -132,7 +132,7 @@ joiResponse = validateRegisterSchema(inputState);
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography  variant="h3">
           Sign up
         </Typography>
         <Box component="div" noValidate sx={{ mt: 3 }}>

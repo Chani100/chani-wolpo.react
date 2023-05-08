@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ROUTES from "../../routes/ROUTES";
 import NavLinkComponent from "./NavLinkComponents";
+import { Typography } from "@mui/material";
 const pages = [
   {
     label: (
@@ -23,16 +24,16 @@ const pages = [
     url: ROUTES.ABOUT,
   },
 ];
- const notAuthPages = [
-   {
-     label: "Register",
-     url: ROUTES.REGISTER,
-   },
-   {
-     label: "Login",
-     url: ROUTES.LOGIN,
-   },
- ];
+const notAuthPages = [
+  {
+    label: "Register",
+    url: ROUTES.REGISTER,
+  },
+  {
+    label: "Login",
+    url: ROUTES.LOGIN,
+  },
+];
 
 const favcard = [{ label: "Fav Cards", url: ROUTES.FAVCARDS }];
 const isBiz = [
@@ -97,25 +98,46 @@ const Hamburger = () => {
         }}
       >
         {pages.map((page) => (
-          <NavLinkComponent key={page.url} {...page} />
+          <NavLinkComponent
+            onClick={handleCloseNavMenu}
+            key={page.url}
+            {...page}
+          />
         ))}
         {isLoggedIn
-          ? favcard.map((page) => <NavLinkComponent key={page.url} {...page} />)
+          ? favcard.map((page) => (
+              <NavLinkComponent
+                onClick={handleCloseNavMenu}
+                key={page.url}
+                {...page}
+              />
+            ))
           : notAuthPages.map((page) => (
-              <NavLinkComponent key={page.url} {...page} />
+              <NavLinkComponent
+                onClick={handleCloseNavMenu}
+                key={page.url}
+                {...page}
+              />
             ))}
-
         {isLoggedIn && payload.biz
-          ? isBiz.map((page) => <NavLinkComponent key={page.url} {...page} />)
+          ? isBiz.map((page) => (
+              <NavLinkComponent
+                onClick={handleCloseNavMenu}
+                key={page.url}
+                {...page}
+              />
+            ))
           : ""}
         {isLoggedIn && payload.isAdmin
-          ? isAdmin.map((page) => <NavLinkComponent key={page.url} {...page} />)
+          ? isAdmin.map((page) => (
+              <NavLinkComponent
+                onClick={handleCloseNavMenu}
+                key={page.url}
+                {...page}
+              />
+            ))
           : ""}
-        {pages.map((page) => (
-          <MenuItem key={"miniLinks" + page.url} onClick={handleCloseNavMenu}>
-            <NavLink to={page.url}></NavLink>
-          </MenuItem>
-        ))}
+      
       </Menu>
     </Box>
   );

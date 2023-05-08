@@ -45,7 +45,7 @@ const MoreInf = () => {
   }, [id]);
 
   const handeleBtnClick = async (ev) => {
-    navigate(ROUTES.HOME);
+    navigate(-1);
   };
   if (!inputState) {
     return <CircularProgress color="secondary" />;
@@ -65,7 +65,7 @@ const MoreInf = () => {
          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
         <SpeakerNotesIcon/>
         </Avatar>
-        <Typography variant="h5">More details</Typography>
+        <Typography variant="h3">More details</Typography>
         <Box
           component="img"
           sx={{
@@ -96,7 +96,7 @@ const MoreInf = () => {
             color="primary"
             onClick={handeleBtnClick}
           >
-            Back to home page.
+            Back to  page.
           </Button>
         </Grid>
       </Box>

@@ -74,11 +74,7 @@ const MuiNavbar = () => {
   const changeTheme = () => {
     dispatch(darkThemeActions.changeTheme());
   };
-  /*  const logoutClick = () => {
-    localStorage.clear();
-    dispatch(authActions.logout());
-  }; */
-
+ 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -119,10 +115,7 @@ const MuiNavbar = () => {
             </IconButton>
           </Box>
 
-          {/*   {isLoggedIn
-            ? authedPages.map((page) =>
-                page.url === ROUTES.LOGOUT ? ( */}
-
+          
           <NavLink>
             <AvatarM onClick={handleOpenNavMenu} />
           </NavLink>

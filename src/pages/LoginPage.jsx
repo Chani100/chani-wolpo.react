@@ -85,7 +85,7 @@ const LoginPage = () => {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LoginIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography  variant="h3">
           Login
         </Typography>
         <Box component="div" noValidate sx={{ mt: 3 }}>

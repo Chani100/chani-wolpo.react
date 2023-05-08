@@ -3,6 +3,8 @@ import validation from "./validation";
 
 const loginSchema = Joi.object({
   email: Joi.string()
+    .min(6)
+    .max(256)
     .email({ tlds: { allow: false } })
     .required(),
   password: Joi.string()
@@ -11,8 +13,8 @@ const loginSchema = Joi.object({
       "string.pattern.base": "regex should be uppercase",
     })
     .required()
-    .min(8)
-    .max(20),
+    .min(6)
+    .max(1024),
 });
 
 const validateLoginSchema = (userInput) => validation(loginSchema, userInput);

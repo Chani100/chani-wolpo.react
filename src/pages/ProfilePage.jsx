@@ -59,7 +59,7 @@ const ProfilePage = () => {
         inputState.zipCode = null;
       }
     } catch (err) {
-      toast.error("errrrrrrrrrrror");
+   
     }
   };
   const shabmit = () => {
@@ -122,7 +122,7 @@ const ProfilePage = () => {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <CreateIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography  variant="h3">
           Profile
         </Typography>
         <Box component="div" noValidate sx={{ mt: 3 }}>
