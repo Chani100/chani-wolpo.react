@@ -64,7 +64,7 @@ const CreateCardPage = () => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
-    const joiResponse = validateEditCardParamsSchema(inputState);
+    const joiResponse = validateEditCardParamsSchema(newInputState);
     setInputsErrorsState(joiResponse);
   };
   const shabmit = () => {

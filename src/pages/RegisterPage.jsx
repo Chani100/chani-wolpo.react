@@ -17,107 +17,106 @@ import { toast } from "react-toastify";
 import CachedIcon from "@mui/icons-material/Cached";
 import RegisterComponent from "../components/RegisterComponent";
 const RegisterPage = () => {
-   const [inputState, setInputState] = useState({
-     firstName: "",
-     middleName: "",
-     lastName: "",
-     phone: "",
-     email: "",
-     password: "",
-     imageUrl: "",
-     imageAlt: "",
-     state: "",
-     country: "",
-     city: "",
-     street: "",
-     houseNumber: "",
-     zipCode: "",
-     biz: false,
-   });
-  
-   let joiResponse = validateRegisterSchema(inputState);
- const [inputsErrorState, setinputsErrorState] = useState(null);
-   const navigate = useNavigate();
-   const handeleBtnClick = async (ev) => {
-     try {
-       joiResponse = validateRegisterSchema(inputState);
- if (joiResponse) {
-         return;
-       }
-       if (inputState.zipCode == "") {
-         inputState.zipCode = null;
-       }
-       await axios.post("/users/register", {
-         firstName: inputState.firstName,
-         middleName: inputState.middleName,
-         lastName: inputState.lastName,
-         phone: inputState.phone,
-         email: inputState.email,
-         password: inputState.password,
-         imageUrl: inputState.imageUrl,
-         imageAlt: inputState.imageAlt,
-         state: inputState.state,
-         country: inputState.country,
-         city: inputState.city,
-         street: inputState.street,
-         houseNumber: inputState.houseNumber,
-         zipCode:inputState.zipCode,
-         biz: inputState.biz,
-       });
-       navigate(ROUTES.LOGIN);
-     } catch (err) {
-      
-       toast.error("registered user");
-     }
-   };
-   const handleChange = (ev) => {
-     let newInputState = JSON.parse(JSON.stringify(inputState));
-     newInputState[ev.target.id] = ev.target.value;
-     setInputState(newInputState);
-     joiResponse = validateRegisterSchema(inputState);
-     setinputsErrorState(joiResponse);
-   };
-   const handleBizChange = (ev) => {
-     let newInputState = JSON.parse(JSON.stringify(inputState));
-     newInputState["biz"] = ev.target.checked;
-     setInputState(newInputState);
-   };
-   const cancel = () => {
-     navigate(ROUTES.HOME);
-   };
-   const shabmit = () => {
-     let newInputState = JSON.parse(JSON.stringify(inputState));
-     newInputState = {
-       firstName: "",
-       middleName: "",
-       lastName: "",
-       phone: "",
-       email: "",
-       password: "",
-       imageUrl: "",
-       imageAlt: "",
-       state: "",
-       country: "",
-       city: "",
-       street: "",
-       houseNumber: "",
-       zipCode: "",
-       biz: false,
-     };
-setInputState(newInputState);
-joiResponse = validateRegisterSchema(inputState);
-     if (!joiResponse) {
-       return;
-     }
-  
- let newjoiResponse = JSON.parse(JSON.stringify(joiResponse));
-     Object.keys(newjoiResponse).forEach((index) => {
-       newjoiResponse[index] = "";
-     });
-     setinputsErrorState(newjoiResponse);
-   };
-  
- const keys = Object.keys(inputState);
+  const [inputState, setInputState] = useState({
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    password: "",
+    imageUrl: "",
+    imageAlt: "",
+    state: "",
+    country: "",
+    city: "",
+    street: "",
+    houseNumber: "",
+    zipCode: "",
+    biz: false,
+  });
+
+  let joiResponse = validateRegisterSchema(inputState);
+  const [inputsErrorState, setinputsErrorState] = useState(null);
+  const navigate = useNavigate();
+  const handeleBtnClick = async (ev) => {
+    try {
+      joiResponse = validateRegisterSchema(inputState);
+      if (joiResponse) {
+        return;
+      }
+      if (inputState.zipCode == "") {
+        inputState.zipCode = null;
+      }
+      await axios.post("/users/register", {
+        firstName: inputState.firstName,
+        middleName: inputState.middleName,
+        lastName: inputState.lastName,
+        phone: inputState.phone,
+        email: inputState.email,
+        password: inputState.password,
+        imageUrl: inputState.imageUrl,
+        imageAlt: inputState.imageAlt,
+        state: inputState.state,
+        country: inputState.country,
+        city: inputState.city,
+        street: inputState.street,
+        houseNumber: inputState.houseNumber,
+        zipCode: inputState.zipCode,
+        biz: inputState.biz,
+      });
+      navigate(ROUTES.LOGIN);
+    } catch (err) {
+      toast.error("registered user");
+    }
+  };
+  const handleChange = (ev) => {
+    let newInputState = JSON.parse(JSON.stringify(inputState));
+    newInputState[ev.target.id] = ev.target.value;
+    setInputState(newInputState);
+    joiResponse = validateRegisterSchema(newInputState);
+    setinputsErrorState(joiResponse);
+  };
+  const handleBizChange = (ev) => {
+    let newInputState = JSON.parse(JSON.stringify(inputState));
+    newInputState["biz"] = ev.target.checked;
+    setInputState(newInputState);
+  };
+  const cancel = () => {
+    navigate(ROUTES.HOME);
+  };
+  const shabmit = () => {
+    let newInputState = JSON.parse(JSON.stringify(inputState));
+    newInputState = {
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      phone: "",
+      email: "",
+      password: "",
+      imageUrl: "",
+      imageAlt: "",
+      state: "",
+      country: "",
+      city: "",
+      street: "",
+      houseNumber: "",
+      zipCode: "",
+      biz: false,
+    };
+    setInputState(newInputState);
+    const joiResponse = validateRegisterSchema(inputState);
+    if (!joiResponse) {
+      return;
+    }
+
+    let newjoiResponse = JSON.parse(JSON.stringify(joiResponse));
+    Object.keys(newjoiResponse).forEach((index) => {
+      newjoiResponse[index] = "";
+    });
+    setinputsErrorState(newjoiResponse);
+  };
+
+  const keys = Object.keys(inputState);
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -132,9 +131,7 @@ joiResponse = validateRegisterSchema(inputState);
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography  variant="h3">
-          Sign up
-        </Typography>
+        <Typography variant="h3">Sign up</Typography>
         <Box component="div" noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             {keys.map((item) => (

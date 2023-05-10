@@ -53,14 +53,15 @@ function App() {
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}
-        newestOnTop={false}
+        newestOnTop
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
-        draggable
+        draggable={false}
         pauseOnHover
         theme="dark"
       />
+     
       <Container>
         <header>
           <MuiNavbar />{" "}

@@ -50,8 +50,8 @@ const LoginPage = () => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
-    const joiResponse = validateLoginSchema(inputState);
-    setInputsErrorsState(joiResponse);
+    const newjoiResponse = validateLoginSchema(newInputState);
+    setInputsErrorsState(newjoiResponse);
   };
   const shabmit = () => {
     let newInputState = JSON.parse(JSON.stringify(inputState));

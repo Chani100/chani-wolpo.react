@@ -95,6 +95,8 @@ const ProfilePage = () => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
+    const joiResponse = ProfileValidation(newInputState);
+    setinputsErrorState(joiResponse);
   };
   if (!inputState) {
     return <CircularProgress color="secondary" />;

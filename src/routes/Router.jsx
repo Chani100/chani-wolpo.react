@@ -8,7 +8,6 @@ import ROUTES from "./ROUTES";
 import { Typography } from "@mui/material";
 import MyCards from "../pages/Mycards";
 import LogoutPags from "../pages/LogoutPags";
-import CreateCard from "../pages/CreateCardPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import SuperProtectedRoute from "../components/SoperProtectedRoute";
 import FavCards from "../pages/FavCards";
@@ -16,10 +15,8 @@ import MoreInformation from "../pages/MoreInformation";
 import SandBox from "../pages/Sandbox";
 import NestedPage1 from "../pages/NestedRoutePage/NestedPage1";
 import NestedPage2 from "../pages/NestedRoutePage/NestedPage2";
-import RP1 from "../pages/RP1";
 import ProtectedEditRoute from "../components/ProtectedEditRoute";
 import ProfilePage from "../pages/ProfilePage";
-import RP2 from "../pages/RP2";
 import RRPButtonParcial from "../pages/ReRenderPage/RRPButtonParcial";
 import RRPH3Parcial from "../pages/ReRenderPage/RRPH3Parcial";
 import CreateCardPage from "../pages/CreateCardPage";
@@ -63,12 +60,7 @@ let Router = () => {
         }
       />
 
-      <Route
-        path="/moreInformation/:id"
-        element={
-          <ProtectedRoute isLoggedIn={true} element={<MoreInformation />} />
-        }
-      />
+      <Route path="/moreInformation/:id" element={<MoreInformation />} />
       <Route
         path="/sandbox"
         element={

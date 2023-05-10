@@ -86,6 +86,8 @@ const EditCardPage = () => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
+    const joiResponse = validateEditCardSchema(newInputState);
+    setinputsErrorState(joiResponse);
   };
   if (!inputState) {
     return <CircularProgress color="secondary" />;

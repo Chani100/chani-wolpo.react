@@ -1,15 +1,15 @@
 import { Alert, Grid, TextField } from "@mui/material";
 
 const requiredF = [
- " title",
- " subTitle",
+  "title",
+  "subTitle",
   "description",
- " country",
- " city",
- " street",
+  "country",
+  "city",
+  "street",
   "houseNumber",
   "phone",
- " email",
+  "email",
 ];
 
 const EditComponent = ({ item, inputState, onChange, inputsErrorState }) => {

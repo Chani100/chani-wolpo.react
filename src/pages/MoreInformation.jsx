@@ -6,14 +6,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate, useParams } from "react-router-dom";
-import ROUTES from "../routes/ROUTES";
 import { CircularProgress, IconButton, BottomNavigation, Avatar } from "@mui/material";
 import axios from "axios";
 import atom from "../logo.svg";
 import SpeakerNotesIcon from "@mui/icons-material/SpeakerNotes";
 import MoreComponent from "../components/MoreComponent";
 const MoreInf = () => {
-  /*  const [cardsArr, setCardsArr] = useState(null); */
   const { id } = useParams();
   const [inputState, setInputState] = useState(null);
   const navigate = useNavigate();
